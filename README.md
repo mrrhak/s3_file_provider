@@ -4,7 +4,7 @@
 [![NuGet](http://img.shields.io/nuget/vpre/MrrHak.Extensions.FileProviders.S3FileProvider.svg?label=NuGet&logo=nuget)](https://www.nuget.org/packages/AutoMapper/)
 ![NuGet Downloads](https://img.shields.io/nuget/dt/MrrHak.Extensions.FileProviders.S3FileProvider?style=flat&logo=docusign&label=Downloads&link=https%3A%2F%2Fwww.nuget.org%2Fstats%2Fpackages%2FMrrHak.Extensions.FileProviders.S3FileProvider)
 [![Code size](https://img.shields.io/github/languages/code-size/mrrhak/s3_file_provider?logo=csharp&color=blue&label=Size)](https://github.com/mrrhak/s3_file_provider)
-[![Lines of code](https://tokei.rs/b1/github/mrrhak/s3_file_provider?category=code&label=Total%20Lines&style=flat)](https://github.com/mrrhak/s3_file_provider)
+![Lines of code](https://img.shields.io/tokei/lines/github/mrrhak/s3_file_provider?style=flat&logo=htmx&label=Lines&link=https%3A%2F%2Fgithub.com%2Fmrrhak%2Fs3_file_provider)
 [![Star on Github](https://img.shields.io/github/stars/mrrhak/s3_file_provider.svg?style=flat&logo=github&colorB=deeppink&label=Stars)](https://github.com/mrrhak/s3_file_provider)
 [![Forks on Github](https://img.shields.io/github/forks/mrrhak/s3_file_provider?style=flat&label=Forks&logo=github)](https://github.com/mrrhak/s3_file_provider)
 [![Build Status](https://github.com/mrrhak/s3_file_provider/actions/workflows/dotnet.yml/badge.svg) ](https://github.com/mrrhak/s3_file_provider/actions?query=workflow%3A)
@@ -67,7 +67,7 @@ app.UseStaticFiles(staticFilesOption);
 To upgrade the version, use the following command to update the version in `S3FileProvider/S3FileProvider.csproj`.
 
 ```bash
-sed -i -e 's/{{VERSION}}/1.0.0/g' S3FileProvider/S3FileProvider.csproj
+sed -i -e '' 's/{{VERSION}}/1.0.0/g' S3FileProvider/S3FileProvider.csproj
 ```
 
 Start Package file for publishing with version `1.0.0`.

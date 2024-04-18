@@ -1,4 +1,5 @@
 name: Publish NuGet Package
+run-name: ${{ github.actor }} is publishing 🚀
 
 on:
   workflow_dispatch:
