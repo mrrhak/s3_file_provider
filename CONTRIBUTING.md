@@ -1,4 +1,4 @@
-# Contributing to icons_launcher
+# Contributing to S3 File Provider
 
 Thank you for your interest in contributing!
 
