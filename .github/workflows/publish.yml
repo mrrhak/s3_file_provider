@@ -1,0 +1,39 @@
+name: Publish NuGet Package
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+#   push:
+#     tags:
+#       - v*.*.**
+
+jobs:
+  publish-nuget-package:
+    name: Publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Set version
+        run: |
+          sed -i '' 's/{{VERSION}}/$(echo "${{github.ref_name}}" | sed 's/^v//')/g' S3FileProvider/S3FileProvider.csproj
+      - name: Restore dependencies
+        run: |
+          dotnet restore
+      - name: Build
+        run: |
+          dotnet build -c Release --no-restore
+      - name: Test
+        run: |
+          dotnet test --no-build --verbosity normal
+      - name: Pack
+        run: |
+          dotnet pack -c Release -o publish --no-build --verbosity normal
+      - name: Publish
+        run: |
+          dotnet nuget push publish/MrrHak.Extensions.FileProviders.S3FileProvider.*.nupkg -s https://api.nuget.org/v3/index.json -k ${{secrets.NUGET_API_KEY}}

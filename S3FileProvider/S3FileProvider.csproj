@@ -1,38 +1,33 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net8.0;net7.0;net6.0;net462</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RootNamespace>MrrHak.Extensions.FileProviders.S3FileProvider</RootNamespace>
-    <!-- <GenerateDocumentationFile>true</GenerateDocumentationFile> -->
-    <AssemblyName>MrrHak.Extensions.FileProviders.S3FileProvider</AssemblyName>
     <PackageId>MrrHak.Extensions.FileProviders.S3FileProvider</PackageId>
-    <LangVersion>12.0</LangVersion>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0</FileVersion>
-    <VersionPrefix>1.0.0</VersionPrefix>
-    <VersionSuffix></VersionSuffix>
+    <DebugType>portable</DebugType>
     <Authors>mrrhak</Authors>
-    <Company>Mrr Hak</Company>
+    <Company>MrrHak</Company>
     <Product>S3 File Provider</Product>
-    <Description>This package is implement with IFileProvider and AWS S3 that provides the functionality to utilize the features of serve static files from Amazon S3.</Description>
     <Copyright>Copyright © Mrr Hak 2024</Copyright>
-    <Summary>A provider to serve static files from Amazon S3</Summary>
-    <NeutralLanguage>en-US</NeutralLanguage>
-    <Title>S3 File Provider</Title>
-    <PackageTags>S3 File Provider</PackageTags>
+    <Description>This package constructs virtual file systems that implement IFileProvider and AWS S3 SDK to provide the functionality for serving static files from Amazon S3.</Description>
+    <Summary>This package creates virtual file systems that use IFileProvider and the AWS S3 SDK to serve static files from Amazon S3.</Summary>
+    <PackageTags>s3fileprovider;s3provider;fileprovider;aws;s3;mrrhak</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>icon.png</PackageIcon>
     <PackageProjectUrl>https://www.mrrhak.com</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/mrrhak/s3_file_provider</RepositoryUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression> 
-    <PublishRepositoryUrl>true</PublishRepositoryUrl> 
-    <MinClientVersion>2.12</MinClientVersion>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <!-- <EnablePackageValidation>true</EnablePackageValidation> -->
-    <PackageValidationBaselineVersion>1.0.0</PackageValidationBaselineVersion>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/../ReleaseNotes.txt"))</PackageReleaseNotes>
+    <EnablePackageValidation>true</EnablePackageValidation>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <LangVersion>12.0</LangVersion>
+    <Version>{{VERSION}}</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -43,7 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.S3" Version="3.7.307.16" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.307.17" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="8.0.0" />
   </ItemGroup>
 </Project>

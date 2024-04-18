@@ -6,12 +6,18 @@ using Microsoft.Extensions.FileProviders;
 
 namespace MrrHak.Extensions.FileProviders.S3FileProvider
 {
+    /// <summary>
+    /// Represents the contents of an S3 directory.
+    /// </summary>
     public class S3DirectoryContents(IAmazonS3 amazonS3, string bucketName, string subpath) : IDirectoryContents
     {
         private readonly string subpath = subpath.TrimEnd('/') + "/";
         private bool IsRoot => subpath == "/";
         private IEnumerable<IFileInfo> contents = [];
 
+        /// <summary>
+        /// Gets a value indicating whether the directory exists.
+        /// </summary>
         public bool Exists
         {
             get
@@ -31,6 +37,11 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
             }
         }
 
+        /// <summary>
+        /// Returns an enumerator that iterates through the directory contents.
+        /// </summary>
+        /// <returns>An enumerator that can be used to iterate through the directory contents.</returns>
+        /// <exception cref="Exception">Thrown if there is an error during enumeration.</exception>
         public IEnumerator<IFileInfo> GetEnumerator()
         {
             EnumerateContents();

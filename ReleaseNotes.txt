@@ -1,9 +1,7 @@
-# Changelog
-
-## 1.0.0-beta.2
+1.0.0-beta.2
 - Add github action publish
 - Update README.md
 - Update package metadata
 
-## 1.0.0-beta.1
+1.0.0-beta.1
 - Initial version
