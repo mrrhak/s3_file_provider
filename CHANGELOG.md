@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.0-beta.3
+- Update README.md
+
 ## 1.0.0-beta.2
 - Add github action publish
 - Update README.md
