@@ -13,7 +13,7 @@
     <Copyright>Copyright © Mrr Hak 2024</Copyright>
     <Description>This package constructs virtual file systems that implement IFileProvider and AWS S3 SDK to provide the functionality for serving static files from Amazon S3.</Description>
     <Summary>This package creates virtual file systems that use IFileProvider and the AWS S3 SDK to serve static files from Amazon S3.</Summary>
-    <PackageTags>s3fileprovider;s3provider;fileprovider;aws;s3;mrrhak</PackageTags>
+    <PackageTags>s3fileprovider;s3provider;fileprovider;aws;s3;hak;mrrhak;kimhak;longkimhak</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>icon.png</PackageIcon>
     <PackageProjectUrl>https://www.mrrhak.com</PackageProjectUrl>
@@ -23,7 +23,7 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/../ReleaseNotes.txt"))</PackageReleaseNotes>
+    <PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/../CHANGELOG.md"))</PackageReleaseNotes>
     <EnablePackageValidation>true</EnablePackageValidation>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <LangVersion>12.0</LangVersion>
@@ -38,7 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.S3" Version="3.7.307.17" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.307.18" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="8.0.0" />
   </ItemGroup>
 </Project>
