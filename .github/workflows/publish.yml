@@ -1,4 +1,4 @@
-name: Publish NuGet Package
+name: Publish
 run-name: ${{ github.actor }} is publishing 🚀
 
 on:
@@ -22,7 +22,8 @@ jobs:
           dotnet-version: 8.0.x
       - name: Set version
         run: |
-          sed -i '' 's/{{VERSION}}/$(echo "${{github.ref_name}}" | sed 's/^v//')/g' S3FileProvider/S3FileProvider.csproj
+          NEW_VERSION=$(echo "${{github.ref_name}}" | sed "s/^v//")
+          sed -i s/{{VERSION}}/$NEW_VERSION/g S3FileProvider/S3FileProvider.csproj
       - name: Restore dependencies
         run: |
           dotnet restore

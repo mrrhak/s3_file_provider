@@ -1,4 +1,4 @@
-name: DotNet CI
+name: Test
 run-name: ${{ github.actor }} is testing 🎉
 
 on:
