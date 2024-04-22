@@ -2,6 +2,7 @@ name: Test
 run-name: ${{ github.actor }} is testing 🎉
 
 on:
+  workflow_dispatch:
   push:
     branches: [master]
   pull_request:
