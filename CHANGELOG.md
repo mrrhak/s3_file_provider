@@ -1,3 +1,9 @@
+## 1.0.0-beta.5 (22-04-2024)
+- Make AWS S3 steam seek able
+- Make AWS S3 SDK as private
+- Upgrade AWS S3 SDK
+- Update README.md
+
 ## 1.0.0-beta.4 (19-04-2024)
 - Upgrade AWS S3 SDK
 - Update README.md
