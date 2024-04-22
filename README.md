@@ -14,7 +14,7 @@
 [![Developer](https://img.shields.io/badge/Developed_by-Mrr_Hak-blue.svg?logo=devdotto)](https://mrrhak.com)
 [![Framework](https://img.shields.io/badge/Frameworks-.Net_8.0_|_.Net_7.0_|_.Net_6.0_|_.Net_Standard_2.0_|_.Net_Framework_4.6.2-blue.svg?logo=dotnet)](https://www.nuget.org/packages/MrrHak.Extensions.FileProviders.S3FileProvider)
 
-This package constructs virtual file systems that implement IFileProvider and AWS S3 SDK to provide the functionality for serving static files from Amazon S3.
+This package represents a file provider for Amazon S3 buckets that constructs virtual file systems that implement IFileProvider and AWS S3 SDK to provide the functionality for serving static files from Amazon S3.
 
 ![S3 File Provider](https://raw.githubusercontent.com/mrrhak/s3_file_provider/master/s3_file_provider.png)
 
@@ -71,7 +71,7 @@ app.UseStaticFiles(staticFilesOption);
 To upgrade the version, use the following command to update the version in `S3FileProvider/S3FileProvider.csproj`.
 
 ```bash
-sed -i '' 's/{{VERSION}}/1.0.0/g' S3FileProvider/S3FileProvider.csproj
+sed -i '' 's/1.0.0/1.0.1/g' S3FileProvider/S3FileProvider.csproj
 ```
 
 Start Package file for publishing with version `1.0.0`.
@@ -83,5 +83,4 @@ dotnet nuget push publish/MrrHak.Extensions.FileProviders.S3FileProvider.*.nupkg
 
 ## Buy me a coffee
 
- [![Buy Me A Coffee](https://user-images.githubusercontent.com/26390946/161375563-69c634fd-89d2-45ac-addd-931b03996b34.png)](https://www.buymeacoffee.com/mrrhak)[![Ko-fi](https://user-images.githubusercontent.com/26390946/161375565-e7d64410-bbcf-4a28-896b-7514e106478e.png)](https://ko-fi.com/mrrhak)
-
+ [![Buy Me A Coffee](https://user-images.githubusercontent.com/26390946/161375563-69c634fd-89d2-45ac-addd-931b03996b34.png)](https://www.buymeacoffee.com/mrrhak) [![Ko-fi](https://user-images.githubusercontent.com/26390946/161375565-e7d64410-bbcf-4a28-896b-7514e106478e.png)](https://ko-fi.com/mrrhak)

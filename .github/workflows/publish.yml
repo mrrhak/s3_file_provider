@@ -23,7 +23,7 @@ jobs:
       - name: Set version
         run: |
           NEW_VERSION=$(echo "${{github.ref_name}}" | sed "s/^v//")
-          sed -i s/{{VERSION}}/$NEW_VERSION/g S3FileProvider/S3FileProvider.csproj
+          sed -i s/1.0.0/$NEW_VERSION/g S3FileProvider/S3FileProvider.csproj
       - name: Restore dependencies
         run: |
           dotnet restore

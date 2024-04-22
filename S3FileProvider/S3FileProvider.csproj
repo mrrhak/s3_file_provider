@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net8.0;net7.0;net6.0;net462</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net8.0;net7.0;net6.0;net462</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RootNamespace>MrrHak.Extensions.FileProviders.S3FileProvider</RootNamespace>
@@ -11,7 +11,7 @@
     <Company>MrrHak</Company>
     <Product>S3 File Provider</Product>
     <Copyright>Copyright © Mrr Hak 2024</Copyright>
-    <Description>This package constructs virtual file systems that implement IFileProvider and AWS S3 SDK to provide the functionality for serving static files from Amazon S3.</Description>
+    <Description>This package represents a file provider for Amazon S3 buckets that constructs virtual file systems that implement IFileProvider and AWS S3 SDK to provide the functionality for serving static files from Amazon S3.</Description>
     <Summary>This package creates virtual file systems that use IFileProvider and the AWS S3 SDK to serve static files from Amazon S3.</Summary>
     <PackageTags>s3fileprovider;s3provider;fileprovider;aws;s3;hak;mrrhak;kimhak;longkimhak</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -27,18 +27,22 @@
     <EnablePackageValidation>true</EnablePackageValidation>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <LangVersion>12.0</LangVersion>
-    <Version>{{VERSION}}</Version>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\key\s3fileprovider.snk</AssemblyOriginatorKeyFile>
+    <!-- This version will be replaced by github actions following release tags -->
+    <Version>1.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="**\*.orig" />
     <None Include="..\LICENSE" Pack="true" PackagePath="LICENSE" />
-    <None Include="..\icon.png" Pack="true" PackagePath="\" />
     <None Include="..\README.md" Pack="true" PackagePath="\" />
+    <None Include="..\icon.png" Pack="true" PackagePath="\" Visible="false" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.S3" Version="3.7.307.18" />
+    <!-- <PackageReference Include="AWSSDK.S3" Version="3.7.307.19" /> -->
+    <PackageReference Include="AWSSDK.S3" Version="3.7.307.19" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="8.0.0" />
   </ItemGroup>
 </Project>
