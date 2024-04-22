@@ -17,8 +17,16 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
         /// </summary>
         public void Dispose()
         {
-            amazonS3.Dispose();
+            Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Disposes the Amazon S3 client.
+        /// </summary>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing) amazonS3.Dispose();
         }
 
         /// <summary>

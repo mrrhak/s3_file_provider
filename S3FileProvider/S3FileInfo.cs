@@ -1,6 +1,7 @@
 using System.Net;
 using Amazon.S3;
 using Amazon.S3.Model;
+using Amazon.S3.Util;
 using Microsoft.Extensions.FileProviders;
 
 namespace MrrHak.Extensions.FileProviders.S3FileProvider
@@ -50,7 +51,7 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
         /// <summary>
         /// Gets the name of the file.
         /// </summary>
-        public string Name => Path.GetFileName(GetFileObject().Key.TrimEnd("/".ToCharArray()));
+        public string Name => Path.GetFileName(GetFileObject().Key.TrimEnd('/'));
 
         /// <summary>
         /// Gets the last modified date and time of the file.
@@ -65,8 +66,8 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
         /// <summary>
         /// Creates a read stream for the file.
         /// </summary>
-        /// <returns>A stream representing the file content.</returns>
-        public Stream CreateReadStream() => GetFileObject().ResponseStream;
+        /// <returns>A seekable stream representing the file content.</returns>
+        public Stream CreateReadStream() => AmazonS3Util.MakeStreamSeekable(GetFileObject().ResponseStream);
 
         private GetObjectResponse GetFileObject() => fileObject ??= amazonS3.GetObjectAsync(bucketName, key).Result;
     }

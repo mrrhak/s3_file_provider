@@ -9,6 +9,7 @@
 [![Star on Github](https://img.shields.io/github/stars/mrrhak/s3_file_provider.svg?style=flat&logo=github&colorB=deeppink&label=Stars)](https://github.com/mrrhak/s3_file_provider)
 [![Forks on Github](https://img.shields.io/github/forks/mrrhak/s3_file_provider?style=flat&label=Forks&logo=github)](https://github.com/mrrhak/s3_file_provider)
 [![Test Status](https://github.com/mrrhak/s3_file_provider/actions/workflows/dotnet.yml/badge.svg) ](https://github.com/mrrhak/s3_file_provider/actions?query=workflow%3A)
+[![SonarCloud Status](https://github.com/mrrhak/s3_file_provider/actions/workflows/sonarcloud.yml/badge.svg) ](https://github.com/mrrhak/s3_file_provider/actions?query=workflow%3A)
 [![Publish Status](https://github.com/mrrhak/s3_file_provider/actions/workflows/publish.yml/badge.svg) ](https://github.com/mrrhak/s3_file_provider/actions?query=workflow%3A)
 [![License: MIT](https://img.shields.io/github/license/mrrhak/s3_file_provider?label=License&color=red&logo=Leanpub)](https://opensource.org/licenses/MIT)
 [![Developer](https://img.shields.io/badge/Developed_by-Mrr_Hak-blue.svg?logo=devdotto)](https://mrrhak.com)
@@ -50,7 +51,7 @@ var staticFilesOption = new StaticFileOptions(){ FileProvider = s3FileProvider};
 app.UseStaticFiles(staticFilesOption);
 ```
 
-> **Note**
+> **Note**: [AWSSDK.S3](https://www.nuget.org/packages/AWSSDK.S3) is required to create an Amazon S3 client.
 > >For Amazon S3 Service instance
 > 
 > ```csharp

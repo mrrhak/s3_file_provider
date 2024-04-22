@@ -1,0 +1,6 @@
+{
+  "sonarlint.connectedMode.project": {
+    "connectionId": "mrrhak",
+    "projectKey": "mrrhak_s3_file_provider"
+  }
+}
