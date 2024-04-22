@@ -1,4 +1,6 @@
 name: SonarCloud
+run-name: ${{ github.actor }} is scanning 🚀
+
 on:
   workflow_dispatch:
   push:
