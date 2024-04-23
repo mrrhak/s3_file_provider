@@ -13,12 +13,18 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
         private static readonly char[] invalidFileNameChars = ['\\', '{', '}', '^', '%', '`', '[', ']', '\'', '"', '>', '<', '~', '#', '|', .. Enumerable.Range(128, 255).Select(x => (char)x)];
 
         /// <summary>
+        /// Gets a value indicating whether this instance has been disposed.
+        /// </summary>
+        public bool IsDeposed { get; private set; } = false;
+
+        /// <summary>
         /// Disposes the Amazon S3 client and suppresses the finalize for this instance.
         /// </summary>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+
         }
 
         /// <summary>
@@ -26,7 +32,11 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
         /// </summary>
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing) amazonS3.Dispose();
+            if (disposing)
+            {
+                amazonS3.Dispose();
+                IsDeposed = true;
+            }
         }
 
         /// <summary>

@@ -161,4 +161,20 @@ public class S3FileProviderTest
         Assert.False(changeToken.ActiveChangeCallbacks);
         Assert.False(changeToken.HasChanged);
     }
+
+    [Fact]
+    public void T005_Dispose()
+    {
+        // Arrange
+        // Mock IAmazonS3 client
+        var mockS3Client = new Mock<IAmazonS3>();
+
+        // Act
+        var s3FileProvider = new S3FileProvider(mockS3Client.Object, bucketName);
+        s3FileProvider.Dispose();
+
+        // Assert
+        Assert.True(s3FileProvider.IsDeposed);
+
+    }
 }

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Net;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Microsoft.Extensions.FileProviders;
@@ -22,25 +21,18 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
         {
             get
             {
-                try
-                {
-                    // Root directory always exists
-                    if (IsRoot) return true;
+                // Root directory always exists
+                if (IsRoot) return true;
 
-                    // List objects with the prefix of the subpath
-                    var listResponse = amazonS3.ListObjectsV2Async(new ListObjectsV2Request
-                    {
-                        BucketName = bucketName,
-                        Prefix = subpath
-                    }).Result;
-
-                    // If there are any objects returned, the directory exists
-                    return listResponse.S3Objects.Exists(x => x.Key == subpath);
-                }
-                catch (AmazonS3Exception ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+                // List objects with the prefix of the subpath
+                var listResponse = amazonS3.ListObjectsV2Async(new ListObjectsV2Request
                 {
-                    return false; // Directory does not exist
-                }
+                    BucketName = bucketName,
+                    Prefix = subpath
+                }).Result;
+
+                // If there are any objects returned, the directory exists
+                return listResponse.S3Objects.Exists(x => x.Key == subpath);
             }
         }
 

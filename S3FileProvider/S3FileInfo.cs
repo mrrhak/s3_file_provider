@@ -1,4 +1,3 @@
-using System.Net;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Util;
@@ -11,7 +10,6 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
     /// </summary>
     public class S3FileInfo(IAmazonS3 amazonS3, string bucketName, string key) : IFileInfo
     {
-        private GetObjectResponse? fileObject;
         private bool? exists;
 
         /// <summary>
@@ -23,16 +21,8 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
             {
                 if (!exists.HasValue)
                 {
-                    try
-                    {
-                        GetFileObject();
-                        exists = fileObject?.Key == key;
-                    }
-                    catch (AmazonS3Exception e)
-                    {
-                        if (e.StatusCode == HttpStatusCode.NotFound) exists = false;
-                        throw;
-                    }
+                    var fileObject = GetFileObject();
+                    exists = fileObject.Key == key;
                 }
                 return exists.Value;
             }
@@ -69,6 +59,6 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
         /// <returns>A seekable stream representing the file content.</returns>
         public Stream CreateReadStream() => AmazonS3Util.MakeStreamSeekable(GetFileObject().ResponseStream);
 
-        private GetObjectResponse GetFileObject() => fileObject ??= amazonS3.GetObjectAsync(bucketName, key).Result;
+        private GetObjectResponse GetFileObject() => amazonS3.GetObjectAsync(bucketName, key).Result;
     }
 }
