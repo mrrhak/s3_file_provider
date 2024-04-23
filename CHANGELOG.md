@@ -1,3 +1,10 @@
+## 1.0.0-beta.6 (23-04-2024)
+- Add Test coverage
+- Improvement functionality
+- Revert back AWS S3 SDK as public
+- Update GitHub Action
+- Update README.md
+
 ## 1.0.0-beta.5 (22-04-2024)
 - Make AWS S3 steam seek able
 - Make AWS S3 SDK as private

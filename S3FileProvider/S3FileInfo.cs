@@ -26,7 +26,7 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
                     try
                     {
                         GetFileObject();
-                        exists = true;
+                        exists = fileObject?.Key == key;
                     }
                     catch (AmazonS3Exception e)
                     {

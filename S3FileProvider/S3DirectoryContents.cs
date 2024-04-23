@@ -24,15 +24,22 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
             {
                 try
                 {
-                    // Root folder always exists
+                    // Root directory always exists
                     if (IsRoot) return true;
-                    amazonS3.GetObjectMetadataAsync(bucketName, subpath).Wait();
-                    return true;
+
+                    // List objects with the prefix of the subpath
+                    var listResponse = amazonS3.ListObjectsV2Async(new ListObjectsV2Request
+                    {
+                        BucketName = bucketName,
+                        Prefix = subpath
+                    }).Result;
+
+                    // If there are any objects returned, the directory exists
+                    return listResponse.S3Objects.Exists(x => x.Key == subpath);
                 }
-                catch (AggregateException e)
+                catch (AmazonS3Exception ex) when (ex.StatusCode == HttpStatusCode.NotFound)
                 {
-                    e.Handle(ie => ie is AmazonS3Exception _ie && _ie.StatusCode == HttpStatusCode.NotFound);
-                    return false;
+                    return false; // Directory does not exist
                 }
             }
         }

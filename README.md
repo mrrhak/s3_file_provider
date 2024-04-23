@@ -9,8 +9,10 @@
 [![Star on Github](https://img.shields.io/github/stars/mrrhak/s3_file_provider.svg?style=flat&logo=github&colorB=deeppink&label=Stars)](https://github.com/mrrhak/s3_file_provider)
 [![Forks on Github](https://img.shields.io/github/forks/mrrhak/s3_file_provider?style=flat&label=Forks&logo=github)](https://github.com/mrrhak/s3_file_provider)
 [![Test Status](https://github.com/mrrhak/s3_file_provider/actions/workflows/dotnet.yml/badge.svg) ](https://github.com/mrrhak/s3_file_provider/actions?query=workflow%3A)
-[![SonarCloud Status](https://github.com/mrrhak/s3_file_provider/actions/workflows/sonarcloud.yml/badge.svg) ](https://github.com/mrrhak/s3_file_provider/actions?query=workflow%3A)
 [![Publish Status](https://github.com/mrrhak/s3_file_provider/actions/workflows/publish.yml/badge.svg) ](https://github.com/mrrhak/s3_file_provider/actions?query=workflow%3A)
+[![SonarCloud Status](https://github.com/mrrhak/s3_file_provider/actions/workflows/sonarcloud.yml/badge.svg) ](https://github.com/mrrhak/s3_file_provider/actions?query=workflow%3A)
+![Sonar Quality Gate](https://img.shields.io/sonar/quality_gate/mrrhak_s3_file_provider?server=https%3A%2F%2Fsonarcloud.io&style=flat&logo=sonarcloud&label=Quality%20Gate)
+![Sonar Coverage](https://img.shields.io/sonar/coverage/mrrhak_s3_file_provider?server=https%3A%2F%2Fsonarcloud.io&style=flat&logo=sonarcloud&label=Coverage)
 [![License: MIT](https://img.shields.io/github/license/mrrhak/s3_file_provider?label=License&color=red&logo=Leanpub)](https://opensource.org/licenses/MIT)
 [![Developer](https://img.shields.io/badge/Developed_by-Mrr_Hak-blue.svg?logo=devdotto)](https://mrrhak.com)
 [![Framework](https://img.shields.io/badge/Frameworks-.Net_8.0_|_.Net_7.0_|_.Net_6.0_|_.Net_Standard_2.0_|_.Net_Framework_4.6.2-blue.svg?logo=dotnet)](https://www.nuget.org/packages/MrrHak.Extensions.FileProviders.S3FileProvider)
@@ -64,6 +66,51 @@ app.UseStaticFiles(staticFilesOption);
 > var amazonS3 = app.Services.GetService<IAmazonS3>();
 > ```
 > 
+
+<details>
+  <summary>Example</summary>
+
+  ### Program.cs
+  1. Register `IAmazonS3` client to `services` collection
+       - `AWSOptions` is using from `AWSSDK.Extensions.NETCore.Setup`
+
+        ```csharp
+            // This value should be get from appsettings.json
+            const string S3_BUCKET_NAME = "bucket-name";
+            const string S3_ACCESS_KEY = "access-key";
+            const string S3_SECRET_KEY = "secret-key";
+            const string DEFAULT_REGION = "region";
+
+            // Get AWS profile info directly from configuration (Profile authentication)
+            AWSOptions awsOptions = builder.Configuration.GetAWSOptions();
+            awsOptions.Region = RegionEndpoint.GetBySystemName(DEFAULT_REGION);
+            builder.Services.AddDefaultAWSOptions(awsOptions);
+
+            // IAM user authentication
+            AWSOptions s3Options = awsOptions;
+            if (!string.IsNullOrEmpty(S3_ACCESS_KEY) && !string.IsNullOrEmpty(S3_SECRET_KEY))
+            {
+                s3Options = new AWSOptions() { Credentials = new BasicAWSCredentials(S3_ACCESS_KEY, S3_SECRET_KEY) };
+                s3Options.Region = RegionEndpoint.GetBySystemName(DEFAULT_REGION);
+            }
+            builder.Services.AddAWSService<IAmazonS3>(s3Options);
+        ```
+
+  2. Register `S3FileProvider` with `UseStaticFiles`
+        ```csharp
+        var amazonS3 = app.Services.GetService<IAmazonS3>();
+        var s3FileProvider = new S3FileProvider(amazonS3, S3_BUCKET_NAME);
+        var staticFilesOption = new StaticFileOptions(){ FileProvider = s3FileProvider};
+        app.UseStaticFiles(staticFilesOption);
+        ```
+</details>
+
+## Build and Test Source Code
+
+```bash
+dotnet build
+dotnet test
+```
 
 ## Publish NuGet Package
 
