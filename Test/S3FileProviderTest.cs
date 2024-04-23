@@ -113,6 +113,7 @@ public class S3FileProviderTest
     {
         // Arrange
         const string key = "hello-world.txt";
+        const string invalidKey = "invalid-#.txt";
         const string expectedContent = "Hello, World!";
         // Mock IAmazonS3 client
         var mockS3Client = new Mock<IAmazonS3>();
@@ -129,12 +130,21 @@ public class S3FileProviderTest
         // Act
         var s3FileProvider = new S3FileProvider(mockS3Client.Object, bucketName);
         var fileInfo = s3FileProvider.GetFileInfo(key);
+        using var textReader = new StreamReader(fileInfo.CreateReadStream());
+        var notFoundFileInfo = s3FileProvider.GetFileInfo("/");
+        var invalidFileInfo = s3FileProvider.GetFileInfo(invalidKey);
 
         // Assert
         Assert.True(fileInfo.Exists);
         Assert.Equal(key, fileInfo.Name);
-        using var textReader = new StreamReader(fileInfo.CreateReadStream());
         Assert.Equal(expectedContent, textReader.ReadToEnd());
+
+        Assert.False(notFoundFileInfo.Exists);
+        Assert.Equal(-1, notFoundFileInfo.Length);
+        Assert.Empty(notFoundFileInfo.Name);
+
+        Assert.False(invalidFileInfo.Exists);
+        Assert.Equal(-1, invalidFileInfo.Length);
     }
 
     [Fact]
