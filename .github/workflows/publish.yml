@@ -25,18 +25,9 @@ jobs:
         run: |
           NEW_VERSION=$(echo "${{github.ref_name}}" | sed "s/^v//")
           sed -i s/1.0.0/$NEW_VERSION/g S3FileProvider/S3FileProvider.csproj
-      - name: Restore dependencies
-        run: |
-          dotnet restore
-      - name: Build
-        run: |
-          dotnet build -c Release --no-restore
-      - name: Test
-        run: |
-          dotnet test --no-build --verbosity normal
       - name: Pack
         run: |
-          dotnet pack -c Release -o publish --no-build --verbosity normal
+          dotnet pack -c Release -o publish
       - name: Publish
         run: |
           dotnet nuget push publish/MrrHak.Extensions.FileProviders.S3FileProvider.*.nupkg -s https://api.nuget.org/v3/index.json -k ${{secrets.NUGET_API_KEY}}
