@@ -21,9 +21,9 @@
 [![Developer](https://img.shields.io/badge/Developed_by-Mrr_Hak-blue.svg?logo=devdotto)](https://mrrhak.com)
 [![Framework](https://img.shields.io/badge/Frameworks-.Net_8.0_|_.Net_7.0_|_.Net_6.0_|_.Net_Standard_2.0_|_.Net_Framework_4.6.2-blue.svg?logo=dotnet)](https://www.nuget.org/packages/MrrHak.Extensions.FileProviders.S3FileProvider)
 
-This package represents a file provider for Amazon S3 buckets that constructs virtual file systems that implement IFileProvider and AWS S3 SDK to provide the functionality for serving static files from Amazon S3.
+This package represents a file provider with an Amazon S3 bucket. It constructs virtual file systems that implement IFileProvider and integrate with AWS S3 SDK to provide the functionality for serving static files in ASP.NET.
 
-![S3 File Provider](https://raw.githubusercontent.com/mrrhak/s3_file_provider/master/s3_file_provider.png)
+![S3 File Provider](https://raw.githubusercontent.com/mrrhak/s3_file_provider/master/s3-file-provider-banner.png)
 
 ---
 
@@ -71,8 +71,8 @@ app.UseStaticFiles(staticFilesOption);
 > ```
 > 
 
-<details>
-  <summary>Example</summary>
+
+  ## Example
 
   ### Program.cs
   1. Register `IAmazonS3` client to `services` collection
@@ -107,7 +107,6 @@ app.UseStaticFiles(staticFilesOption);
         var staticFilesOption = new StaticFileOptions(){ FileProvider = s3FileProvider};
         app.UseStaticFiles(staticFilesOption);
         ```
-</details>
 
 ## Build and Test Source Code
 

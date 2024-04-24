@@ -25,11 +25,7 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
                 if (IsRoot) return true;
 
                 // List objects with the prefix of the subpath
-                var listResponse = amazonS3.ListObjectsV2Async(new ListObjectsV2Request
-                {
-                    BucketName = bucketName,
-                    Prefix = subpath
-                }).Result;
+                var listResponse = amazonS3.ListObjectsV2Async(new ListObjectsV2Request { BucketName = bucketName, Prefix = subpath }).Result;
 
                 // If there are any objects returned, the directory exists
                 return listResponse.S3Objects.Exists(x => x.Key == subpath);

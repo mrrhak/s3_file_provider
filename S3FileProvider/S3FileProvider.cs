@@ -24,7 +24,6 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
         {
             Dispose(true);
             GC.SuppressFinalize(this);
-
         }
 
         /// <summary>
@@ -68,10 +67,7 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
         /// </summary>
         /// <param name="filter">The filter to watch for changes.</param>
         /// <returns>A change token that represents the changes made to the filter.</returns>
-        public IChangeToken Watch(string filter)
-        {
-            return NullChangeToken.Singleton;
-        }
+        public IChangeToken Watch(string filter) => NullChangeToken.Singleton;
 
         private static bool HasInvalidFileNameChars(string path) => path.IndexOfAny(invalidFileNameChars) != -1;
     }

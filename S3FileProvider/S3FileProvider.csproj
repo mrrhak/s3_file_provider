@@ -10,8 +10,8 @@
     <Company>MrrHak</Company>
     <Product>S3 File Provider</Product>
     <Copyright>Copyright © Mrr Hak 2024</Copyright>
-    <Description>This package represents a file provider for Amazon S3 buckets that constructs virtual file systems that implement IFileProvider and AWS S3 SDK to provide the functionality for serving static files from Amazon S3.</Description>
-    <Summary>This package creates virtual file systems that use IFileProvider and the AWS S3 SDK to serve static files from Amazon S3.</Summary>
+    <Description>This package represents a file provider with an Amazon S3 bucket. It constructs virtual file systems that implement IFileProvider and integrate with AWS S3 SDK to provide the functionality for serving static files in ASP.NET.</Description>
+    <Summary>This package creates virtual file systems to provide the functionality for serving static files from Amazon S3 in ASP.NET.</Summary>
     <PackageTags>s3fileprovider;s3provider;fileprovider;aws;s3;hak;mrrhak;kimhak;longkimhak</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>icon.png</PackageIcon>
@@ -38,7 +38,7 @@
     <None Include="..\icon.png" Pack="true" PackagePath="\" Visible="false"/>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AWSSDK.S3" Version="3.7.307.19"/>
+    <PackageReference Include="AWSSDK.S3" Version="3.7.307.21"/>
     <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="8.0.0"/>
   </ItemGroup>
 </Project>

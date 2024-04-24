@@ -1,3 +1,7 @@
+## 1.0.0-beta.7 (24-04-2024)
+- Improvement
+- Update README.md
+
 ## 1.0.0-beta.6 (23-04-2024)
 - Add Test coverage
 - Improvement functionality
