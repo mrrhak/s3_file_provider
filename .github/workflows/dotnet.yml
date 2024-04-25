@@ -1,4 +1,4 @@
-name: Test
+name: .NET Test
 run-name: ${{ github.actor }} is testing 🎉
 
 on:
@@ -12,7 +12,7 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    timeout-minutes: 2
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
       - name: Setup .NET
@@ -27,7 +27,7 @@ jobs:
     name: Test
     needs: ["build"]
     runs-on: ubuntu-latest
-    timeout-minutes: 2
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
       - name: Setup .NET

@@ -47,6 +47,12 @@ Creating a `S3FileProvider` instance is very simple:
 var s3FileProvider = new S3FileProvider(amazonS3, bucketName);
 ```
 
+Or using `GetS3FileProvider` extension method
+```csharp
+var s3FileProvider = app.Services.GetS3FileProvider(bucketName);
+```
+
+
 ### Using S3 for serve as static files
 
 First, configure `S3FileProvider` with `UseStaticFiles`, in the program/startup of your application:

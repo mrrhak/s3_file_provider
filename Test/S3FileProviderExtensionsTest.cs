@@ -15,6 +15,7 @@ namespace Test
             // Arrange
             var serviceProvider = new Mock<IServiceProvider>();
             serviceProvider.Setup(sp => sp.GetService(typeof(IAmazonS3))).Returns(new Mock<IAmazonS3>().Object);
+            var serviceProviderException = new Mock<IServiceProvider>();
 
             // Act
             try
@@ -28,6 +29,15 @@ namespace Test
                 Assert.Null(ex);
             }
 
+            try
+            {
+                serviceProviderException.Object.GetS3FileProvider(bucketName);
+            }
+            catch (Exception ex)
+            {
+                Assert.NotNull(ex);
+                Assert.Equal("Could not get an IAmazonS3 instance from the service provider.", ex.Message);
+            }
         }
 
         [Fact]

@@ -1,4 +1,4 @@
-name: Publish
+name: NuGet Publish
 run-name: ${{ github.actor }} is publishing (${{github.ref_name}}) 🚀
 
 on:

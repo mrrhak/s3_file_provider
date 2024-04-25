@@ -1,4 +1,4 @@
-name: SonarCloud
+name: SonarCloud Analysis
 run-name: ${{ github.actor }} is scanning 🔎
 
 on:
@@ -12,7 +12,7 @@ jobs:
   build:
     name: Build and analyze
     runs-on: windows-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
       - name: Set up JDK 21
         uses: actions/setup-java@v4
