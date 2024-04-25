@@ -1,0 +1,11 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Example Asp.NetCore",
+      "type": "dotnet",
+      "request": "launch",
+      "projectPath": "${workspaceFolder}/Example/Asp.NetCore/Asp.NetCore.csproj"
+    }
+  ]
+}

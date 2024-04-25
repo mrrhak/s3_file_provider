@@ -1,3 +1,11 @@
+## 1.0.0 (25-04-2024)
+- Move to stable version
+- Update README.md
+- Add example project
+- Add extensions helpers
+  - GetS3FileProvider
+  - UseS3StaticFiles
+
 ## 1.0.0-beta.7 (24-04-2024)
 - Improvement
 - Update README.md

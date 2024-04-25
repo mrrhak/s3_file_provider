@@ -57,6 +57,12 @@ var staticFilesOption = new StaticFileOptions(){ FileProvider = s3FileProvider};
 app.UseStaticFiles(staticFilesOption);
 ```
 
+Or using `UseS3StaticFiles` extension method (recommended)
+```csharp
+app.UseS3StaticFiles(bucketName);
+```
+
+
 > **Note**: [AWSSDK.S3](https://www.nuget.org/packages/AWSSDK.S3) is required to create an Amazon S3 client.
 > >For Amazon S3 Service instance
 > 
@@ -106,6 +112,11 @@ app.UseStaticFiles(staticFilesOption);
         var s3FileProvider = new S3FileProvider(amazonS3, S3_BUCKET_NAME);
         var staticFilesOption = new StaticFileOptions(){ FileProvider = s3FileProvider};
         app.UseStaticFiles(staticFilesOption);
+        ```
+
+        Or using `UseS3StaticFiles` extension method (recommended)
+        ```csharp
+        app.UseS3StaticFiles(S3_BUCKET_NAME);
         ```
 
 ## Build and Test Source Code
