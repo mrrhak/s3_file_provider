@@ -1,5 +1,5 @@
 name: Commitlint
-run-name: ${{ github.actor }} is publishing (${{github.ref_name}}) 🚀
+run-name: ${{ github.actor }} is linting (${{github.ref_name}}) 🚀
 
 on:
   workflow_dispatch:
@@ -11,15 +11,14 @@ on:
 
 jobs:
   commitlint:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Install required dependencies
         run: |
-          apt update
-          apt install -y sudo
+          sudo apt update
           sudo apt install -y git curl
           curl -sL https://deb.nodesource.com/setup_20.x | sudo -E bash -
           sudo DEBIAN_FRONTEND=noninteractive apt install -y nodejs
