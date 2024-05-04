@@ -1,3 +1,11 @@
+## 1.0.1 (04-05-2024)
+- Add new overloads for UseS3StaticFiles extension with S3StaticFileOptions
+- Add local commitlint
+- Add GitHub Action commitlint
+- Upgrade AWS S3 SDK
+- Update UseS3StaticFiles extension to allow passing requestPath and serveUnknownFileTypes
+- Update README.md
+
 ## 1.0.0 (25-04-2024)
 - Move to stable version
 - Update README.md

@@ -2,7 +2,9 @@
 ======================
 
 [![NuGet](http://img.shields.io/nuget/vpre/MrrHak.Extensions.FileProviders.S3FileProvider.svg?label=NuGet&logo=nuget)](https://www.nuget.org/packages/MrrHak.Extensions.FileProviders.S3FileProvider)
-[![NuGet Downloads](https://img.shields.io/nuget/dt/MrrHak.Extensions.FileProviders.S3FileProvider?style=flat&logo=docusign&label=Downloads&link=https%3A%2F%2Fwww.nuget.org%2Fstats%2Fpackages%2FMrrHak.Extensions.FileProviders.S3FileProvider)](https://www.nuget.org/stats/packages/MrrHak.Extensions.FileProviders.S3FileProvider?groupby=Version)
+[![NuGet Downloads](https://img.shields.io/nuget/dt/MrrHak.Extensions.FileProviders.S3FileProvider?style=flat&logo=nuget&label=NuGet%20Downloads&link=https%3A%2F%2Fwww.nuget.org%2Fstats%2Fpackages%2FMrrHak.Extensions.FileProviders.S3FileProvider)](https://www.nuget.org/stats/packages/MrrHak.Extensions.FileProviders.S3FileProvider?groupby=Version)
+![MyGet Version](https://img.shields.io/myget/mrrhak/v/MrrHak.Extensions.FileProviders.S3FileProvider?style=flat&logo=myget&label=MyGet&link=https%3A%2F%2Fwww.myget.org%2Ffeed%2Fmrrhak%2Fpackage%2Fnuget%2FMrrHak.Extensions.FileProviders.S3FileProvider)
+![MyGet Downloads](https://img.shields.io/myget/mrrhak/dt/MrrHak.Extensions.FileProviders.S3FileProvider?style=flat&logo=myget&label=MyGet%20Downloads&color=bule&link=https%3A%2F%2Fwww.myget.org%2Ffeed%2Fmrrhak%2Fpackage%2Fnuget%2FMrrHak.Extensions.FileProviders.S3FileProvider)
 [![File count](https://img.shields.io/github/directory-file-count/mrrhak/s3_file_provider?type=file&style=flat&logo=onlyoffice&label=Files&link=https%3A%2F%2Fgithub.com%2Fmrrhak%2Fs3_file_provider)](https://github.com/mrrhak/s3_file_provider)
 [![Repo size](https://img.shields.io/github/repo-size/mrrhak/s3_file_provider?style=flat&logo=github&label=Repo%20size&link=https%3A%2F%2Fgithub.com%2Fmrrhak%2Fs3_file_provider)](https://github.com/mrrhak/s3_file_provider)
 [![Code size](https://img.shields.io/github/languages/code-size/mrrhak/s3_file_provider?logo=csharp&color=blue&label=Code%20size)](https://github.com/mrrhak/s3_file_provider)
@@ -62,12 +64,17 @@ var s3FileProvider = new S3FileProvider(amazonS3, bucketName);
 var staticFilesOption = new StaticFileOptions(){ FileProvider = s3FileProvider};
 app.UseStaticFiles(staticFilesOption);
 ```
-
 Or using `UseS3StaticFiles` extension method (recommended)
+
+| Parameter               |   Type   | Required | Default Value | Description |
+| :---------------------- | :------: | :------: | :-----------: | :---------- |
+| `bucketName`            | `string` |    Yes   |               | The name of the S3 bucket |
+| `RequestPath`           | `string` |    No    |     `null`    | The request path for the static files |
+| `serveUnknownFileTypes` |  `bool`  |    No    |     `false`   | Whether to serve unknown file types |
+
 ```csharp
 app.UseS3StaticFiles(bucketName);
 ```
-
 
 > **Note**: [AWSSDK.S3](https://www.nuget.org/packages/AWSSDK.S3) is required to create an Amazon S3 client.
 > >For Amazon S3 Service instance
@@ -83,70 +90,63 @@ app.UseS3StaticFiles(bucketName);
 > ```
 > 
 
+### S3StaticFileOptions
+| Option                  |  Type    | Required | Default Value | Description |
+| :---------------------- | :------- | :------: | :-----------: | :---------- |
+| `BucketName`            | `string` |    Yes   |    `empty`    | The name of the S3 bucket |
+| `RequestPath`           | `string` |    No    |    `null`     | The relative request path that maps to static resources |
+| `ServeUnknownFileTypes` |  `bool`  |    No    |    `false`    | Whether to serve unknown file types |
+| `DefaultContentType`    | `string` |    No    |    `null`     | The default content type for a request if the ContentTypeProvider cannot determine one. None is provided by default, so the client must determine the format themselves |
+| `ContentTypeProvider`   | `IContentTypeProvider` | No | `null` | Used to map files to content-types |
+| `OnPrepareResponse`     | `Action<PrepareResponseContext>` | No | `null` | Called after the status code and headers have been set, but before the body has been written. This can be used to add or change the response headers |
 
-  ## Example
 
-  ### Program.cs
-  1. Register `IAmazonS3` client to `services` collection
-       - `AWSOptions` is using from `AWSSDK.Extensions.NETCore.Setup`
+## Example
 
-        ```csharp
-            // This value should be get from appsettings.json
-            const string S3_BUCKET_NAME = "bucket-name";
-            const string S3_ACCESS_KEY = "access-key";
-            const string S3_SECRET_KEY = "secret-key";
-            const string DEFAULT_REGION = "region";
+### Program.cs
+1. Register `IAmazonS3` client to `services` collection
+    - `AWSOptions` is using from [`AWSSDK.Extensions.NETCore.Setup`](https://www.nuget.org/packages/AWSSDK.Extensions.NETCore.Setup)
 
-            // Get AWS profile info directly from configuration (Profile authentication)
-            AWSOptions awsOptions = builder.Configuration.GetAWSOptions();
-            awsOptions.Region = RegionEndpoint.GetBySystemName(DEFAULT_REGION);
-            builder.Services.AddDefaultAWSOptions(awsOptions);
+    ```csharp
+        // This value should be get from appsettings.json
+        const string S3_BUCKET_NAME = "bucket-name";
+        const string S3_ACCESS_KEY = "access-key";
+        const string S3_SECRET_KEY = "secret-key";
+        const string DEFAULT_REGION = "region";
 
-            // IAM user authentication
-            AWSOptions s3Options = awsOptions;
-            if (!string.IsNullOrEmpty(S3_ACCESS_KEY) && !string.IsNullOrEmpty(S3_SECRET_KEY))
-            {
-                s3Options = new AWSOptions() { Credentials = new BasicAWSCredentials(S3_ACCESS_KEY, S3_SECRET_KEY) };
-                s3Options.Region = RegionEndpoint.GetBySystemName(DEFAULT_REGION);
-            }
-            builder.Services.AddAWSService<IAmazonS3>(s3Options);
-        ```
+        // Get AWS profile info directly from configuration (Profile authentication)
+        AWSOptions awsOptions = builder.Configuration.GetAWSOptions();
+        awsOptions.Region = RegionEndpoint.GetBySystemName(DEFAULT_REGION);
+        builder.Services.AddDefaultAWSOptions(awsOptions);
 
-  2. Register `S3FileProvider` with `UseStaticFiles`
-        ```csharp
-        var amazonS3 = app.Services.GetService<IAmazonS3>();
-        var s3FileProvider = new S3FileProvider(amazonS3, S3_BUCKET_NAME);
-        var staticFilesOption = new StaticFileOptions(){ FileProvider = s3FileProvider};
-        app.UseStaticFiles(staticFilesOption);
-        ```
+        // IAM user authentication
+        AWSOptions s3Options = awsOptions;
+        if (!string.IsNullOrEmpty(S3_ACCESS_KEY) && !string.IsNullOrEmpty(S3_SECRET_KEY))
+        {
+            s3Options = new AWSOptions() { Credentials = new BasicAWSCredentials(S3_ACCESS_KEY, S3_SECRET_KEY) };
+            s3Options.Region = RegionEndpoint.GetBySystemName(DEFAULT_REGION);
+        }
+        builder.Services.AddAWSService<IAmazonS3>(s3Options);
+    ```
 
-        Or using `UseS3StaticFiles` extension method (recommended)
-        ```csharp
-        app.UseS3StaticFiles(S3_BUCKET_NAME);
-        ```
+2. Register `S3FileProvider` with `UseStaticFiles`
+    ```csharp
+    var amazonS3 = app.Services.GetService<IAmazonS3>();
+    var s3FileProvider = new S3FileProvider(amazonS3, S3_BUCKET_NAME);
+    var staticFilesOption = new StaticFileOptions(){ FileProvider = s3FileProvider};
+    app.UseStaticFiles(staticFilesOption);
+    ```
+
+    Or using `UseS3StaticFiles` extension method (recommended)
+    ```csharp
+    app.UseS3StaticFiles(S3_BUCKET_NAME);
+    ```
 
 ## Build and Test Source Code
 
 ```bash
 dotnet build
 dotnet test
-```
-
-## Publish NuGet Package
-
-### Upgrade version
-
-To upgrade the version, use the following command to update the version in `S3FileProvider/S3FileProvider.csproj`.
-
-```bash
-sed -i '' 's/1.0.0/1.0.1/g' S3FileProvider/S3FileProvider.csproj
-```
-
-Start Package file for publishing with version `1.0.0`.
-
-```bash
-dotnet pack -c Release -o publish /p:Version=1.0.0
-dotnet nuget push publish/MrrHak.Extensions.FileProviders.S3FileProvider.*.nupkg -s https://api.nuget.org/v3/index.json -k $NUGET_API_KEY
 ```
 
 ## Buy me a coffee

@@ -1,0 +1,48 @@
+{
+  "name": "s3_file_provider",
+  "version": "1.0.0",
+  "description": "This package represents a file provider with an Amazon S3 bucket. It constructs virtual file systems that implement IFileProvider and integrate with AWS S3 SDK to provide the functionality for serving static files in ASP.NET.",
+  "scripts": {
+    "restore": "dotnet restore",
+    "build": "dotnet build",
+    "pack": "dotnet pack",
+    "test": "dotnet test",
+    "clean": "dotnet clean",
+    "prepare": "husky",
+    "commit": "cz",
+    "commitlint": "commitlint --edit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrrhak/s3_file_provider.git"
+  },
+  "keywords": [
+    "s3fileprovider",
+    "s3provider",
+    "fileprovider",
+    "aws",
+    "s3",
+    "hak",
+    "mrrhak",
+    "kimhak",
+    "longkimhak"
+  ],
+  "author": "mrrhak",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mrrhak/s3_file_provider/issues"
+  },
+  "homepage": "https://github.com/mrrhak/s3_file_provider#readme",
+  "devDependencies": {
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
+    "@commitlint/cz-commitlint": "^19.2.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "husky": "^9.0.11"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}

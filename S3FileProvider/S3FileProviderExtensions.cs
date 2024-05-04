@@ -26,11 +26,33 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
         /// </summary>
         /// <param name="app">The application builder.</param>
         /// <param name="bucketName">The name of the S3 bucket.</param>
+        /// <param name="requestPath">The relative request path that maps to static resources.</param>
+        /// <param name="serveUnknownFileTypes">If the file is not a recognized content-type should it be served? Default: false</param>
         /// <returns>The updated application builder.</returns>
-        public static IApplicationBuilder UseS3StaticFiles(this IApplicationBuilder app, string bucketName)
+        public static IApplicationBuilder UseS3StaticFiles(this IApplicationBuilder app, string bucketName, string? requestPath = null, bool? serveUnknownFileTypes = false)
         {
             var s3FileProvider = app.ApplicationServices.GetS3FileProvider(bucketName);
             var staticFilesOption = new StaticFileOptions() { FileProvider = s3FileProvider };
+            if (!string.IsNullOrEmpty(requestPath)) staticFilesOption.RequestPath = requestPath;
+            if (serveUnknownFileTypes.HasValue) staticFilesOption.ServeUnknownFileTypes = serveUnknownFileTypes.Value;
+            return app.UseStaticFiles(staticFilesOption);
+        }
+
+        /// <summary>
+        /// Extension method for configuring the application to use S3 static files with custom options.
+        /// </summary>
+        /// <param name="app">The application builder.</param>
+        /// <param name="options">The options for configuring the S3 static files.</param>
+        /// <returns>The updated application builder.</returns>
+        public static IApplicationBuilder UseS3StaticFiles(this IApplicationBuilder app, S3StaticFileOptions options)
+        {
+            var s3FileProvider = app.ApplicationServices.GetS3FileProvider(options.BucketName);
+            var staticFilesOption = new StaticFileOptions() { FileProvider = s3FileProvider };
+            if (!string.IsNullOrEmpty(options.RequestPath)) staticFilesOption.RequestPath = options.RequestPath;
+            if (options.ServeUnknownFileTypes.HasValue) staticFilesOption.ServeUnknownFileTypes = options.ServeUnknownFileTypes.Value;
+            if (!string.IsNullOrEmpty(options.DefaultContentType)) staticFilesOption.DefaultContentType = options.DefaultContentType;
+            if (options.ContentTypeProvider != null) staticFilesOption.ContentTypeProvider = options.ContentTypeProvider;
+            if (options.OnPrepareResponse != null) staticFilesOption.OnPrepareResponse = options.OnPrepareResponse;
             return app.UseStaticFiles(staticFilesOption);
         }
     }

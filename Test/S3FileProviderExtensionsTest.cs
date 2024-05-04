@@ -1,5 +1,6 @@
 using Amazon.S3;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.StaticFiles;
 using Moq;
 using MrrHak.Extensions.FileProviders.S3FileProvider;
 
@@ -41,9 +42,11 @@ namespace Test
         }
 
         [Fact]
-        public void T001_UseS3StaticFiles()
+        public void T002_UseS3StaticFiles()
         {
             // Arrange
+            string requestPath = "/static";
+            bool serveUnknownFileTypes = true;
             var serviceProvider = new Mock<IServiceProvider>();
             serviceProvider.Setup(sp => sp.GetService(typeof(IAmazonS3))).Returns(new Mock<IAmazonS3>().Object);
 
@@ -53,7 +56,66 @@ namespace Test
             // Act And Assert
             try
             {
+                // Case 1
                 builder.Object.UseS3StaticFiles(bucketName);
+
+                // Case 2
+                builder.Object.UseS3StaticFiles(bucketName, requestPath: requestPath);
+
+                // Case 3
+                builder.Object.UseS3StaticFiles(bucketName, serveUnknownFileTypes: serveUnknownFileTypes);
+
+                // Case 4
+                builder.Object.UseS3StaticFiles(bucketName, requestPath: requestPath);
+            }
+            catch (Exception ex)
+            {
+                Assert.Null(ex);
+            }
+        }
+
+        [Fact]
+        public void T003_UseS3StaticFiles_With_Options()
+        {
+            // Arrange
+            string requestPath = "/static";
+            bool serveUnknownFileTypes = true;
+            var serviceProvider = new Mock<IServiceProvider>();
+            serviceProvider.Setup(sp => sp.GetService(typeof(IAmazonS3))).Returns(new Mock<IAmazonS3>().Object);
+
+            var builder = new Mock<IApplicationBuilder>();
+            builder.Setup(b => b.ApplicationServices).Returns(serviceProvider.Object);
+
+            // Act And Assert
+            try
+            {
+                // Case 1
+                var s3StaticFileOptions = new S3StaticFileOptions() { BucketName = bucketName };
+                builder.Object.UseS3StaticFiles(s3StaticFileOptions);
+
+                // Case 2
+                s3StaticFileOptions.RequestPath = requestPath;
+                builder.Object.UseS3StaticFiles(s3StaticFileOptions);
+
+                // Case 3
+                s3StaticFileOptions.ServeUnknownFileTypes = serveUnknownFileTypes;
+                builder.Object.UseS3StaticFiles(s3StaticFileOptions);
+
+                // Case 4
+                s3StaticFileOptions.DefaultContentType = "text/html";
+                builder.Object.UseS3StaticFiles(s3StaticFileOptions);
+
+                // Case 5
+                s3StaticFileOptions.ContentTypeProvider = new Mock<IContentTypeProvider>().Object;
+                builder.Object.UseS3StaticFiles(s3StaticFileOptions);
+
+                // Case 6
+                s3StaticFileOptions.OnPrepareResponse = (context) =>
+                {
+                    context.Context.Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+                    context.Context.Response.Headers["Expires"] = "-1";
+                };
+                builder.Object.UseS3StaticFiles(s3StaticFileOptions);
             }
             catch (Exception ex)
             {
