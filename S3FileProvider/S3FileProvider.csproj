@@ -31,16 +31,19 @@
     <Version>1.0.0</Version>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="**\*.orig" />
-    <None Include="..\LICENSE" Pack="true" PackagePath="LICENSE" />
-    <None Include="..\README.md" Pack="true" PackagePath="\" />
-    <None Include="..\icon.png" Pack="true" PackagePath="\" Visible="false" />
+    <None Remove="**\*.orig"/>
+    <None Include="..\LICENSE" Pack="true" PackagePath="LICENSE"/>
+    <None Include="..\README.md" Pack="true" PackagePath="\"/>
+    <None Include="..\icon.png" Pack="true" PackagePath="\" Visible="false"/>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AWSSDK.S3" Version="3.7.307.28" />
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="8.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
-    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.307.29"/>
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="8.0.0"/>
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0"/>
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17"/>
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0"/>
+    <PackageReference Include="Microsoft.Owin" Version="4.2.2"/>
+    <PackageReference Include="Microsoft.Owin.FileSystems" Version="4.2.2"/>
+    <PackageReference Include="Microsoft.Owin.StaticFiles" Version="4.2.2"/>
   </ItemGroup>
 </Project>

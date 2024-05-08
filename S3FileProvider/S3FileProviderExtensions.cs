@@ -1,5 +1,8 @@
 using Amazon.S3;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Owin;
+using Microsoft.Owin.FileSystems;
+using Owin;
 
 namespace MrrHak.Extensions.FileProviders.S3FileProvider
 {
@@ -54,6 +57,23 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
             if (options.ContentTypeProvider != null) staticFilesOption.ContentTypeProvider = options.ContentTypeProvider;
             if (options.OnPrepareResponse != null) staticFilesOption.OnPrepareResponse = options.OnPrepareResponse;
             return app.UseStaticFiles(staticFilesOption);
+        }
+
+        /// <summary>
+        /// Extension method for configuring the application to use S3 static files with Owin.
+        /// </summary>
+        /// <param name="app">The application builder.</param>
+        /// <param name="amazonS3">The Amazon S3 client.</param>
+        /// <param name="bucketName">The name of the S3 bucket.</param>
+        /// <param name="requestPath">The relative request path that maps to static resources.</param>
+        /// <param name="serveUnknownFileTypes">If the file is not a recognized content-type should it be served? Default: false</param>
+        /// <returns>The updated application builder.</returns>
+        public static IAppBuilder UseS3StaticFiles(this IAppBuilder app, IAmazonS3 amazonS3, string bucketName, string? requestPath = null, bool? serveUnknownFileTypes = false)
+        {
+            Microsoft.Owin.StaticFiles.StaticFileOptions staticFileOptions = new() { FileSystem = new S3OwinFileSystem(amazonS3, bucketName) };
+            if (!string.IsNullOrEmpty(requestPath)) staticFileOptions.RequestPath = PathString.FromUriComponent(requestPath);
+            if (serveUnknownFileTypes.HasValue) staticFileOptions.ServeUnknownFileTypes = serveUnknownFileTypes.Value;
+            return app.UseStaticFiles(staticFileOptions);
         }
     }
 }

@@ -1,5 +1,5 @@
 name: Commitlint
-run-name: ${{ github.actor }} is linting (${{github.ref_name}}) 🚀
+run-name: ${{ github.actor }} is linting (${{github.ref_name}}) 🌱
 
 on:
   workflow_dispatch:
