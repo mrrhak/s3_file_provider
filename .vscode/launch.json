@@ -2,10 +2,16 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Example Asp.NetCore",
+      "name": "Sample Asp.NetCore",
       "type": "dotnet",
       "request": "launch",
-      "projectPath": "${workspaceFolder}/Example/Asp.NetCore/Asp.NetCore.csproj"
+      "projectPath": "${workspaceFolder}/Sample/Asp.NetCore/Asp.NetCore.csproj"
+    },
+    {
+      "name": "Sample Asp.NetFramework",
+      "type": "dotnet",
+      "request": "launch",
+      "projectPath": "${workspaceFolder}/Sample/Asp.NetFramework/Asp.NetFramework.csproj"
     }
   ]
 }

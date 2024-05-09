@@ -8,9 +8,25 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
     /// <summary>
     /// Represents a file in an S3 bucket.
     /// </summary>
-    public class S3FileInfo(IAmazonS3 amazonS3, string bucketName, string key) : IFileInfo
+    public class S3FileInfo : IFileInfo
     {
+        private readonly IAmazonS3 amazonS3;
+        private readonly string bucketName;
+        private readonly string key;
         private bool? exists;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="S3FileInfo"/> class.
+        /// </summary>
+        /// <param name="amazonS3">The Amazon S3 client.</param>
+        /// <param name="bucketName">The name of the S3 bucket.</param>
+        /// <param name="key">The key of the file in the S3 bucket.</param>
+        public S3FileInfo(IAmazonS3 amazonS3, string bucketName, string key)
+        {
+            this.amazonS3 = amazonS3;
+            this.bucketName = bucketName;
+            this.key = key;
+        }
 
         /// <summary>
         /// Gets a value indicating whether the file exists.

@@ -8,24 +8,23 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
     /// <summary>
     /// Represents a file in an S3 bucket.
     /// </summary>
-    public class S3OwinFileInfo(IAmazonS3 amazonS3, string bucketName, string key) : IFileInfo
+    public class S3OwinFileInfo : IFileInfo
     {
-        private bool? exists;
+        private readonly IAmazonS3 amazonS3;
+        private readonly string bucketName;
+        private readonly string key;
 
         /// <summary>
-        /// Gets a value indicating whether the file exists.
+        /// Initializes a new instance of the <see cref="S3OwinFileInfo"/> class.
         /// </summary>
-        public bool Exists
+        /// <param name="amazonS3">The Amazon S3 client.</param>
+        /// <param name="bucketName">The name of the S3 bucket.</param>
+        /// <param name="key">The key of the file in the S3 bucket.</param>
+        public S3OwinFileInfo(IAmazonS3 amazonS3, string bucketName, string key)
         {
-            get
-            {
-                if (!exists.HasValue)
-                {
-                    var fileObject = GetFileObject();
-                    exists = fileObject.Key == key;
-                }
-                return exists.Value;
-            }
+            this.amazonS3 = amazonS3;
+            this.bucketName = bucketName;
+            this.key = key;
         }
 
         /// <summary>

@@ -1,7 +1,10 @@
-## 1.1.0-beta.1 (08-06-2024)
+## 1.1.0 (09-05-2024)
 - Add new overloads for UseS3StaticFiles extension with Owin for .Net Framework
+- Add sample project for .Net Framework
+- Add more test coverage
 - Upgrade AWS S3 SDK
 - Update GitHub Action commitlint
+- Update README.md
 
 ## 1.0.1 (04-05-2024)
 - Add new overloads for UseS3StaticFiles extension with S3StaticFileOptions

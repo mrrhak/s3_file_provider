@@ -7,10 +7,21 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
     /// <summary>
     /// Represents a file provider for Amazon S3 buckets.
     /// </summary>
-    public class S3FileProvider(IAmazonS3 amazonS3, string bucketName) : IFileProvider, IDisposable
+    public class S3FileProvider : IFileProvider, IDisposable
     {
-        private static readonly char[] pathSeparators = ['/'];
-        private static readonly char[] invalidFileNameChars = ['\\', '{', '}', '^', '%', '`', '[', ']', '\'', '"', '>', '<', '~', '#', '|', .. Enumerable.Range(128, 255).Select(x => (char)x)];
+        private readonly IAmazonS3 amazonS3;
+        private readonly string bucketName;
+
+        /// <summary>
+        /// Initializes a new instance of the S3FileProvider class.
+        /// </summary>
+        /// <param name="amazonS3">The Amazon S3 client.</param>
+        /// <param name="bucketName">The name of the S3 bucket.</param>
+        public S3FileProvider(IAmazonS3 amazonS3, string bucketName)
+        {
+            this.amazonS3 = amazonS3;
+            this.bucketName = bucketName;
+        }
 
         /// <summary>
         /// Gets a value indicating whether this instance has been disposed.
@@ -45,7 +56,7 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
         /// <returns>An instance of the IDirectoryContents interface representing the directory contents.</returns>
         public IDirectoryContents GetDirectoryContents(string subpath)
         {
-            subpath = subpath.TrimStart(pathSeparators);
+            subpath = subpath.TrimStart(S3Constant.PATH_SEPARATORS);
             return new S3DirectoryContents(amazonS3, bucketName, subpath);
         }
 
@@ -56,9 +67,9 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
         /// <returns>An instance of the IFileInfo interface representing the file.</returns>
         public IFileInfo GetFileInfo(string subpath)
         {
-            if (HasInvalidFileNameChars(subpath)) return new NotFoundFileInfo(subpath);
-            subpath = subpath.TrimStart(pathSeparators);
-            if (string.IsNullOrEmpty(subpath)) return new NotFoundFileInfo(subpath);
+            if (HasInvalidFileNameChars(subpath)) throw new ArgumentException("Invalid file name.", nameof(subpath));
+            subpath = subpath.TrimStart(S3Constant.PATH_SEPARATORS);
+            if (string.IsNullOrEmpty(subpath)) throw new ArgumentException("Empty file name.", nameof(subpath));
             return new S3FileInfo(amazonS3, bucketName, subpath);
         }
 
@@ -69,6 +80,6 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
         /// <returns>A change token that represents the changes made to the filter.</returns>
         public IChangeToken Watch(string filter) => NullChangeToken.Singleton;
 
-        private static bool HasInvalidFileNameChars(string path) => path.IndexOfAny(invalidFileNameChars) != -1;
+        private static bool HasInvalidFileNameChars(string path) => path.IndexOfAny(S3Constant.INVALID_FILE_NAME_CHARS.ToArray()) != -1;
     }
 }

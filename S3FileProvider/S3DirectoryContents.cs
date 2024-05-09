@@ -8,11 +8,27 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
     /// <summary>
     /// Represents the contents of an S3 directory.
     /// </summary>
-    public class S3DirectoryContents(IAmazonS3 amazonS3, string bucketName, string subpath) : IDirectoryContents
+    public class S3DirectoryContents : IDirectoryContents
     {
-        private readonly string subpath = subpath.TrimEnd('/') + "/";
+        private readonly string subpath;
+        private readonly IAmazonS3 amazonS3;
+        private readonly string bucketName;
+
         private bool IsRoot => subpath == "/";
         private IEnumerable<IFileInfo> contents = [];
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="S3DirectoryContents"/> class.
+        /// </summary>
+        /// <param name="amazonS3">The Amazon S3 client.</param>
+        /// <param name="bucketName">The name of the S3 bucket.</param>
+        /// <param name="subpath">The subpath for which to retrieve the directory contents.</param>
+        public S3DirectoryContents(IAmazonS3 amazonS3, string bucketName, string subpath)
+        {
+            this.amazonS3 = amazonS3;
+            this.bucketName = bucketName;
+            this.subpath = subpath.TrimEnd('/') + "/";
+        }
 
         /// <summary>
         /// Gets a value indicating whether the directory exists.

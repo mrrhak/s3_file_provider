@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.StaticFiles;
 using Moq;
 using MrrHak.Extensions.FileProviders.S3FileProvider;
+using Owin;
 
 namespace Test
 {
@@ -66,7 +67,7 @@ namespace Test
                 builder.Object.UseS3StaticFiles(bucketName, serveUnknownFileTypes: serveUnknownFileTypes);
 
                 // Case 4
-                builder.Object.UseS3StaticFiles(bucketName, requestPath: requestPath);
+                builder.Object.UseS3StaticFiles(bucketName, requestPath, serveUnknownFileTypes);
             }
             catch (Exception ex)
             {
@@ -116,6 +117,36 @@ namespace Test
                     context.Context.Response.Headers["Expires"] = "-1";
                 };
                 builder.Object.UseS3StaticFiles(s3StaticFileOptions);
+            }
+            catch (Exception ex)
+            {
+                Assert.Null(ex);
+            }
+        }
+
+        [Fact]
+        public void T004_UseS3StaticFiles_Framework()
+        {
+            // Arrange
+            string requestPath = "/static";
+            bool serveUnknownFileTypes = true;
+            var mockS3Client = new Mock<IAmazonS3>();
+            var builder = new Mock<IAppBuilder>();
+
+            // Act And Assert
+            try
+            {
+                // Case 1
+                builder.Object.UseS3StaticFiles(mockS3Client.Object, bucketName);
+
+                // Case 2
+                builder.Object.UseS3StaticFiles(mockS3Client.Object, bucketName, requestPath: requestPath);
+
+                // Case 3
+                builder.Object.UseS3StaticFiles(mockS3Client.Object, bucketName, serveUnknownFileTypes: serveUnknownFileTypes);
+
+                // Case 4
+                builder.Object.UseS3StaticFiles(mockS3Client.Object, bucketName, requestPath, serveUnknownFileTypes);
             }
             catch (Exception ex)
             {

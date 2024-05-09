@@ -4,5 +4,6 @@
     "projectKey": "mrrhak_s3_file_provider"
   },
   "cSpell.ignoreWords": ["commitlint", "fileprovider", "kimhak", "longkimhak"],
-  "cSpell.words": ["Owin"]
+  "cSpell.words": ["Owin", "wwwroot"],
+  "dotnet.preferCSharpExtension": true
 }

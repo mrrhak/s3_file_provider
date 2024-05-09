@@ -1,7 +1,6 @@
 using Amazon.S3;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Owin;
-using Microsoft.Owin.FileSystems;
 using Owin;
 
 namespace MrrHak.Extensions.FileProviders.S3FileProvider

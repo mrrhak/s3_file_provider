@@ -1,24 +1,39 @@
 using Amazon.S3;
 using Amazon.S3.Model;
-using Microsoft.Owin.FileSystems;
 
 namespace MrrHak.Extensions.FileProviders.S3FileProvider
 {
     /// <summary>
     /// Represents the contents of an S3 directory.
     /// </summary>
-    public class S3OwinDirectoryContents(IAmazonS3 amazonS3, string bucketName, string subpath)
+    public class S3OwinDirectoryContents
     {
-        private readonly string subpath = subpath.TrimEnd('/') + "/";
+        private readonly string subpath;
+        private readonly IAmazonS3 amazonS3;
+        private readonly string bucketName;
+
         private bool IsRoot => subpath == "/";
-        private IEnumerable<IFileInfo> contents = [];
+        private IEnumerable<S3OwinFileInfo> contents = Enumerable.Empty<S3OwinFileInfo>();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="S3OwinDirectoryContents"/> class.
+        /// </summary>
+        /// <param name="amazonS3">The Amazon S3 client.</param>
+        /// <param name="bucketName">The name of the S3 bucket.</param>
+        /// <param name="subpath">The subpath for which to retrieve the directory contents.</param>
+        public S3OwinDirectoryContents(IAmazonS3 amazonS3, string bucketName, string subpath)
+        {
+            this.amazonS3 = amazonS3;
+            this.bucketName = bucketName;
+            this.subpath = subpath.TrimEnd('/') + "/";
+        }
 
         /// <summary>
         /// Returns an enumerator that iterates through the directory contents.
         /// </summary>
         /// <returns>An enumerator that can be used to iterate through the directory contents.</returns>
         /// <exception cref="Exception">Thrown if there is an error during enumeration.</exception>
-        public IEnumerable<IFileInfo> GetEnumerable()
+        public IEnumerable<S3OwinFileInfo> GetEnumerable()
         {
             EnumerateContents();
             return contents;

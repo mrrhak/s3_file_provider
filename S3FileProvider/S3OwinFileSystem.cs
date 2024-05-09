@@ -6,10 +6,21 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
     /// <summary>
     /// Represents a file system for Amazon S3 buckets.
     /// </summary>
-    public class S3OwinFileSystem(IAmazonS3 amazonS3, string bucketName) : IFileSystem, IDisposable
+    public class S3OwinFileSystem : IFileSystem, IDisposable
     {
-        private static readonly char[] pathSeparators = ['/'];
-        private static readonly char[] invalidFileNameChars = ['\\', '{', '}', '^', '%', '`', '[', ']', '\'', '"', '>', '<', '~', '#', '|', .. Enumerable.Range(128, 255).Select(x => (char)x)];
+        private readonly IAmazonS3 amazonS3;
+        private readonly string bucketName;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="S3OwinFileSystem"/> class.
+        /// </summary>
+        /// <param name="amazonS3">The Amazon S3 client.</param>
+        /// <param name="bucketName">The name of the S3 bucket.</param>
+        public S3OwinFileSystem(IAmazonS3 amazonS3, string bucketName)
+        {
+            this.amazonS3 = amazonS3;
+            this.bucketName = bucketName;
+        }
 
         /// <summary>
         /// Gets a value indicating whether this instance has been disposed.
@@ -44,7 +55,7 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
         /// <param name="contents">The directory contents.</param>
         public bool TryGetDirectoryContents(string subpath, out IEnumerable<IFileInfo> contents)
         {
-            subpath = subpath.TrimStart(pathSeparators);
+            subpath = subpath.TrimStart(S3Constant.PATH_SEPARATORS);
             try
             {
                 var s3DirectoryContents = new S3OwinDirectoryContents(amazonS3, bucketName, subpath);
@@ -53,7 +64,7 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
             }
             catch (Exception)
             {
-                contents = [];
+                contents = Enumerable.Empty<S3OwinFileInfo>();
                 return false;
             }
         }
@@ -65,13 +76,13 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
         /// <param name="fileInfo">An instance of the IFileInfo interface representing the file.</param>
         public bool TryGetFileInfo(string subpath, out IFileInfo fileInfo)
         {
-            if (HasInvalidFileNameChars(subpath)) throw new ArgumentException(nameof(subpath));
-            subpath = subpath.TrimStart(pathSeparators);
-            if (string.IsNullOrEmpty(subpath)) throw new ArgumentException(nameof(subpath));
+            if (HasInvalidFileNameChars(subpath)) throw new ArgumentException("Invalid file name.", nameof(subpath));
+            subpath = subpath.TrimStart();
+            if (string.IsNullOrEmpty(subpath)) throw new ArgumentException("Empty file name.", nameof(subpath));
             fileInfo = new S3OwinFileInfo(amazonS3, bucketName, subpath);
             return true;
         }
 
-        private static bool HasInvalidFileNameChars(string path) => path.IndexOfAny(invalidFileNameChars) != -1;
+        private static bool HasInvalidFileNameChars(string path) => path.IndexOfAny(S3Constant.INVALID_FILE_NAME_CHARS.ToArray()) != -1;
     }
 }

@@ -30,6 +30,10 @@ var app = builder.Build();
 
 app.MapGet("/", () => "Hello World!");
 
+// Serve from wwwroot
+app.UseStaticFiles();
+
+// Serve from S3 bucket
 // Use Extension from S3 File Provider
 app.UseS3StaticFiles(S3_BUCKET_NAME!);
 

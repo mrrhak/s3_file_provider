@@ -43,6 +43,8 @@ dotnet add package MrrHak.Extensions.FileProviders.S3FileProvider
 
 ## How do I get started?
 
+### .Net Core Configuration
+
 Creating a `S3FileProvider` instance is very simple:
 
 ```csharp
@@ -101,9 +103,9 @@ app.UseS3StaticFiles(bucketName);
 | `OnPrepareResponse`     | `Action<PrepareResponseContext>` | No | `null` | Called after the status code and headers have been set, but before the body has been written. This can be used to add or change the response headers |
 
 
-## Example
+### Example
 
-### Program.cs
+#### Program.cs
 1. Register `IAmazonS3` client to `services` collection
     - `AWSOptions` is using from [`AWSSDK.Extensions.NETCore.Setup`](https://www.nuget.org/packages/AWSSDK.Extensions.NETCore.Setup)
 
@@ -141,6 +143,38 @@ app.UseS3StaticFiles(bucketName);
     ```csharp
     app.UseS3StaticFiles(S3_BUCKET_NAME);
     ```
+---
+
+### .Net Framework Configuration
+#### 1. Install Required Packages for .Net Framework
+```bash
+dotnet add package Microsoft.Owin.Host.SystemWeb
+```
+
+#### 2. Create Owin Startup class
+```csharp
+public class Startup
+{
+    public void Configuration(IAppBuilder app)
+    {
+        var s3Client = new AmazonS3Client("your-access-key", "your-secret-key", Amazon.RegionEndpoint.APSoutheast1);
+        app.UseS3StaticFiles(s3Client, "your-bucket-name");
+
+        // Another implementation
+    }
+}
+```
+
+#### 3. Update Web.config
+```xml
+<system.webServer>
+    <handlers>
+        <add name="Owin" verb="" path="*" type="Microsoft.Owin.Host.SystemWeb.OwinHttpHandler, Microsoft.Owin.Host.SystemWeb"/>
+    </handlers>
+</system.webServer>
+```
+
+---
 
 ## Build and Test Source Code
 

@@ -7,9 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "S3FileProvider", "S3FilePro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{16EBEB45-ECED-4DF3-B4AE-72C945298816}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example", "Example", "{4A6B2F3A-16CB-4929-A53F-8AE2970A9F1F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample", "Sample", "{4A6B2F3A-16CB-4929-A53F-8AE2970A9F1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asp.NetCore", "Example\Asp.NetCore\Asp.NetCore.csproj", "{C1DA6604-0E11-447F-8D26-6549BB560566}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asp.NetCore", "Sample\Asp.NetCore\Asp.NetCore.csproj", "{C1DA6604-0E11-447F-8D26-6549BB560566}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asp.NetFramework", "Sample\Asp.NetFramework\Asp.NetFramework.csproj", "{997E1B31-4A70-4339-9C00-64E89506D615}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,10 @@ Global
 		{C1DA6604-0E11-447F-8D26-6549BB560566}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1DA6604-0E11-447F-8D26-6549BB560566}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1DA6604-0E11-447F-8D26-6549BB560566}.Release|Any CPU.Build.0 = Release|Any CPU
+		{997E1B31-4A70-4339-9C00-64E89506D615}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{997E1B31-4A70-4339-9C00-64E89506D615}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{997E1B31-4A70-4339-9C00-64E89506D615}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{997E1B31-4A70-4339-9C00-64E89506D615}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -38,5 +44,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C1DA6604-0E11-447F-8D26-6549BB560566} = {4A6B2F3A-16CB-4929-A53F-8AE2970A9F1F}
+		{997E1B31-4A70-4339-9C00-64E89506D615} = {4A6B2F3A-16CB-4929-A53F-8AE2970A9F1F}
 	EndGlobalSection
 EndGlobal

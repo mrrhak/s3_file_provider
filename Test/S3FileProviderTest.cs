@@ -105,7 +105,6 @@ public class S3FileProviderTest
         Assert.NotEmpty(subContents2);
         Assert.True(subContents2.Exists);
         Assert.Equal(2, subContents2.Count());
-
     }
 
     [Fact]
@@ -113,7 +112,6 @@ public class S3FileProviderTest
     {
         // Arrange
         const string key = "hello-world.txt";
-        const string invalidKey = "invalid-#.txt";
         const string expectedContent = "Hello, World!";
         // Mock IAmazonS3 client
         var mockS3Client = new Mock<IAmazonS3>();
@@ -131,24 +129,67 @@ public class S3FileProviderTest
         var s3FileProvider = new S3FileProvider(mockS3Client.Object, bucketName);
         var fileInfo = s3FileProvider.GetFileInfo(key);
         using var textReader = new StreamReader(fileInfo.CreateReadStream());
-        var notFoundFileInfo = s3FileProvider.GetFileInfo("/");
-        var invalidFileInfo = s3FileProvider.GetFileInfo(invalidKey);
 
         // Assert
         Assert.True(fileInfo.Exists);
         Assert.Equal(key, fileInfo.Name);
         Assert.Equal(expectedContent, textReader.ReadToEnd());
-
-        Assert.False(notFoundFileInfo.Exists);
-        Assert.Equal(-1, notFoundFileInfo.Length);
-        Assert.Empty(notFoundFileInfo.Name);
-
-        Assert.False(invalidFileInfo.Exists);
-        Assert.Equal(-1, invalidFileInfo.Length);
     }
 
     [Fact]
-    public void T004_Watch()
+    public void T004_GetFileInfo_NotFound()
+    {
+        // Arrange
+        const string key = "hello-world.txt";
+        // Mock IAmazonS3 client
+        var mockS3Client = new Mock<IAmazonS3>();
+        mockS3Client
+            .Setup(client => client.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), default))
+            .ReturnsAsync(new GetObjectResponse
+            {
+                HttpStatusCode = HttpStatusCode.NotFound,
+            });
+
+        // Act
+        var s3FileProvider = new S3FileProvider(mockS3Client.Object, bucketName);
+        var notFoundFileInfo = s3FileProvider.GetFileInfo(key);
+
+        // Assert
+        Assert.False(notFoundFileInfo.Exists);
+        Assert.Equal(0, notFoundFileInfo.Length);
+    }
+
+    [Fact]
+    public void T005_GetFileInfo_EmptyKey()
+    {
+        // Arrange
+        // Mock IAmazonS3 client
+        var mockS3Client = new Mock<IAmazonS3>();
+
+        // Act
+        var s3FileProvider = new S3FileProvider(mockS3Client.Object, bucketName);
+
+        // Assert
+        Assert.Contains("Empty file name", Assert.Throws<ArgumentException>(() => s3FileProvider.GetFileInfo("")).Message);
+    }
+
+    [Fact]
+    public void T006_GetFileInfo_InvalidKey()
+    {
+        // Arrange
+        const string invalidKey = "invalid-#.txt";
+        // Mock IAmazonS3 client
+        var mockS3Client = new Mock<IAmazonS3>();
+
+        // Act 
+        var s3FileProvider = new S3FileProvider(mockS3Client.Object, bucketName);
+
+        // Assert
+        Assert.Contains("Invalid file name", Assert.Throws<ArgumentException>(() => s3FileProvider.GetFileInfo(invalidKey)).Message);
+    }
+
+    [Fact]
+    public void T007_Watch()
     {
         // Arrange
         const string key = "hello-world.txt";
@@ -173,7 +214,7 @@ public class S3FileProviderTest
     }
 
     [Fact]
-    public void T005_Dispose()
+    public void T008_Dispose()
     {
         // Arrange
         // Mock IAmazonS3 client
@@ -185,6 +226,5 @@ public class S3FileProviderTest
 
         // Assert
         Assert.True(s3FileProvider.IsDeposed);
-
     }
 }

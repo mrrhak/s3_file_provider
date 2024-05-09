@@ -4,8 +4,8 @@
   "description": "This package represents a file provider with an Amazon S3 bucket. It constructs virtual file systems that implement IFileProvider and integrate with AWS S3 SDK to provide the functionality for serving static files in ASP.NET.",
   "scripts": {
     "restore": "dotnet restore",
-    "build": "dotnet build",
-    "pack": "dotnet pack",
+    "build": "dotnet build S3FileProvider",
+    "pack": "dotnet pack S3FileProvider",
     "test": "dotnet test",
     "clean": "dotnet clean",
     "prepare": "husky",

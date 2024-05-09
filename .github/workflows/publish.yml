@@ -27,7 +27,7 @@ jobs:
           sed -i s/1.0.0/$NEW_VERSION/g S3FileProvider/S3FileProvider.csproj
       - name: Pack
         run: |
-          dotnet pack -c Release -o publish
+          dotnet pack S3FileProvider -c Release -o publish
       - name: Publish
         run: |
           dotnet nuget push publish/MrrHak.Extensions.FileProviders.S3FileProvider.*.nupkg -s https://api.nuget.org/v3/index.json -k ${{secrets.NUGET_API_KEY}}
