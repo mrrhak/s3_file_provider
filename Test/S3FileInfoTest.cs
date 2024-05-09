@@ -155,11 +155,11 @@ public class S3FileInfoTest
             });
 
         // Act
-        var s3FileInfo = new S3FileInfo(mockS3Client.Object, bucketName, key);
+        var s3FileInfo1 = new S3FileInfo(mockS3Client.Object, bucketName, key);
         var s3FileInfo2 = new S3FileInfo(mockS3Client2.Object, bucketName, folder);
 
         // Assert
-        Assert.False(s3FileInfo.IsDirectory);
+        Assert.False(s3FileInfo1.IsDirectory);
         Assert.True(s3FileInfo2.IsDirectory);
     }
 

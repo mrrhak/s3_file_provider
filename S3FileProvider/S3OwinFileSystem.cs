@@ -56,17 +56,9 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
         public bool TryGetDirectoryContents(string subpath, out IEnumerable<IFileInfo> contents)
         {
             subpath = subpath.TrimStart(S3Constant.PATH_SEPARATORS);
-            try
-            {
-                var s3DirectoryContents = new S3OwinDirectoryContents(amazonS3, bucketName, subpath);
-                contents = s3DirectoryContents.GetEnumerable();
-                return true;
-            }
-            catch (Exception)
-            {
-                contents = Enumerable.Empty<S3OwinFileInfo>();
-                return false;
-            }
+            var s3DirectoryContents = new S3OwinDirectoryContents(amazonS3, bucketName, subpath);
+            contents = s3DirectoryContents.GetEnumerable();
+            return true;
         }
 
         /// <summary>

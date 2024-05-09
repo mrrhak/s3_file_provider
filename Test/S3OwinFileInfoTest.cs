@@ -13,31 +13,7 @@ public class S3OwinFileInfoTest
     private readonly string key = "hello-world.txt";
 
     [Fact]
-    public void T001_Exists()
-    {
-        // Arrange
-        // Mock IAmazonS3 client
-        var mockS3Client = new Mock<IAmazonS3>();
-        mockS3Client
-            .Setup(client => client.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), default))
-            .ReturnsAsync(new GetObjectResponse
-            {
-                BucketName = bucketName,
-                HttpStatusCode = HttpStatusCode.OK,
-                Key = key,
-            });
-
-        // Act
-        var s3FileInfo = new S3FileInfo(mockS3Client.Object, bucketName, key);
-        var s3FileInfoNotExist = new S3FileInfo(mockS3Client.Object, bucketName, "not-exist.txt");
-
-        // Assert
-        Assert.True(s3FileInfo.Exists);
-        Assert.False(s3FileInfoNotExist.Exists);
-    }
-
-    [Fact]
-    public void T002_Length()
+    public void T001_Length()
     {
         // Arrange
         const long expectedLength = 12;
@@ -54,14 +30,14 @@ public class S3OwinFileInfoTest
             });
 
         // Act
-        var s3FileInfo = new S3FileInfo(mockS3Client.Object, bucketName, key);
+        var s3OwinFileInfo = new S3OwinFileInfo(mockS3Client.Object, bucketName, key);
 
         // Assert
-        Assert.Equal(expectedLength, s3FileInfo.Length);
+        Assert.Equal(expectedLength, s3OwinFileInfo.Length);
     }
 
     [Fact]
-    public void T003_PhysicalPath()
+    public void T002_PhysicalPath()
     {
         // Arrange
         // Mock IAmazonS3 client
@@ -76,14 +52,14 @@ public class S3OwinFileInfoTest
             });
 
         // Act
-        var s3FileInfo = new S3FileInfo(mockS3Client.Object, bucketName, key);
+        var s3OwinFileInfo = new S3OwinFileInfo(mockS3Client.Object, bucketName, key);
 
         // Assert
-        Assert.Null(s3FileInfo.PhysicalPath);
+        Assert.Null(s3OwinFileInfo.PhysicalPath);
     }
 
     [Fact]
-    public void T004_Name()
+    public void T003_Name()
     {
         // Arrange
         // Mock IAmazonS3 client
@@ -98,14 +74,14 @@ public class S3OwinFileInfoTest
             });
 
         // Act
-        var s3FileInfo = new S3FileInfo(mockS3Client.Object, bucketName, key);
+        var s3OwinFileInfo = new S3OwinFileInfo(mockS3Client.Object, bucketName, key);
 
         // Assert
-        Assert.Equal(key, s3FileInfo.Name);
+        Assert.Equal(key, s3OwinFileInfo.Name);
     }
 
     [Fact]
-    public void T005_LastModified()
+    public void T004_LastModified()
     {
         // Arrange
         var expectedLastModified = DateTime.UtcNow;
@@ -122,14 +98,14 @@ public class S3OwinFileInfoTest
             });
 
         // Act
-        var s3FileInfo = new S3FileInfo(mockS3Client.Object, bucketName, key);
+        var s3OwinFileInfo = new S3OwinFileInfo(mockS3Client.Object, bucketName, key);
 
         // Assert
-        Assert.Equal(expectedLastModified, s3FileInfo.LastModified);
+        Assert.Equal(expectedLastModified, s3OwinFileInfo.LastModified);
     }
 
     [Fact]
-    public void T006_IsDirectory()
+    public void T005_IsDirectory()
     {
         // Arrange
         const string folder = "/folder/";
@@ -155,16 +131,16 @@ public class S3OwinFileInfoTest
             });
 
         // Act
-        var s3FileInfo = new S3FileInfo(mockS3Client.Object, bucketName, key);
-        var s3FileInfo2 = new S3FileInfo(mockS3Client2.Object, bucketName, folder);
+        var s3OwinFileInfo1 = new S3OwinFileInfo(mockS3Client.Object, bucketName, key);
+        var s3OwinFileInfo2 = new S3OwinFileInfo(mockS3Client2.Object, bucketName, folder);
 
         // Assert
-        Assert.False(s3FileInfo.IsDirectory);
-        Assert.True(s3FileInfo2.IsDirectory);
+        Assert.False(s3OwinFileInfo1.IsDirectory);
+        Assert.True(s3OwinFileInfo2.IsDirectory);
     }
 
     [Fact]
-    public void T007_CreateReadStream()
+    public void T006_CreateReadStream()
     {
         // Arrange
         const string streamContent = "Hello, World!";
@@ -181,8 +157,8 @@ public class S3OwinFileInfoTest
             });
 
         // Act
-        var s3FileInfo = new S3FileInfo(mockS3Client.Object, bucketName, key);
-        var stream = s3FileInfo.CreateReadStream();
+        var s3OwinFileInfo = new S3OwinFileInfo(mockS3Client.Object, bucketName, key);
+        var stream = s3OwinFileInfo.CreateReadStream();
 
         // Assert
         Assert.NotNull(stream);

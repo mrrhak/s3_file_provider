@@ -67,7 +67,11 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
         /// <summary>
         /// Gets a value indicating whether the file is a directory.
         /// </summary>
+#if NETFRAMEWORK || NETSTANDARD
         public bool IsDirectory => GetFileObject().Key.EndsWith("/");
+#else
+        public bool IsDirectory => GetFileObject().Key.EndsWith('/');
+#endif
 
         /// <summary>
         /// Creates a read stream for the file.
