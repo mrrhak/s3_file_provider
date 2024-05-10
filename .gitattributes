@@ -1,0 +1,6 @@
+# Treat all files .cshtml files as C# files
+**/*.cshtml linguist-language=csharp
+
+# Mark all files .ts as vendored (excluded from language statistics)
+**/*.ts linguist-vendored
+.husky/** linguist-vendored

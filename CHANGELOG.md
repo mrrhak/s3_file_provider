@@ -1,4 +1,4 @@
-## 1.1.0 (09-05-2024)
+## 1.1.0 (10-05-2024)
 - Add new overloads for UseS3StaticFiles extension with Owin for .Net Framework
 - Add sample project for .Net Framework
 - Add more test coverage
