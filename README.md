@@ -71,8 +71,8 @@ Or using `UseS3StaticFiles` extension method (recommended)
 | Parameter               |   Type   | Required | Default Value | Description |
 | :---------------------- | :------: | :------: | :-----------: | :---------- |
 | `bucketName`            | `string` |    Yes   |               | The name of the S3 bucket |
-| `RequestPath`           | `string` |    No    |     `null`    | The request path for the static files |
-| `RootPath`           | `string` |    No    |     `null`    | The root path for the S3 bucket |
+| `requestPath`           | `string` |    No    |     `null`    | The request path for the static files |
+| `rootPath`           | `string` |    No    |     `null`    | The root path for the S3 bucket |
 | `serveUnknownFileTypes` |  `bool`  |    No    |     `false`   | Whether to serve unknown file types |
 
 ```csharp
