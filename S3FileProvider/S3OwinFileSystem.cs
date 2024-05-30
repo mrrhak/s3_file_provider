@@ -58,8 +58,8 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
         /// <param name="contents">The directory contents.</param>
         public bool TryGetDirectoryContents(string subpath, out IEnumerable<IFileInfo> contents)
         {
+            if (!string.IsNullOrEmpty(rootPath)) subpath = rootPath!.TrimStart(S3Constant.PATH_SEPARATORS) + "/" + subpath.TrimStart(S3Constant.PATH_SEPARATORS);
             subpath = subpath.TrimStart(S3Constant.PATH_SEPARATORS);
-            if (!string.IsNullOrEmpty(rootPath)) subpath = rootPath!.TrimStart(S3Constant.PATH_SEPARATORS) + "/" + subpath;
             var s3DirectoryContents = new S3OwinDirectoryContents(amazonS3, bucketName, subpath);
             contents = s3DirectoryContents.GetEnumerable();
             return true;
@@ -73,8 +73,8 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
         public bool TryGetFileInfo(string subpath, out IFileInfo fileInfo)
         {
             if (HasInvalidFileNameChars(subpath)) throw new ArgumentException("Invalid file name.", nameof(subpath));
+            if (!string.IsNullOrEmpty(rootPath)) subpath = rootPath!.TrimStart(S3Constant.PATH_SEPARATORS) + "/" + subpath.TrimStart(S3Constant.PATH_SEPARATORS);
             subpath = subpath.TrimStart(S3Constant.PATH_SEPARATORS);
-            if (!string.IsNullOrEmpty(rootPath)) subpath = rootPath!.TrimStart(S3Constant.PATH_SEPARATORS) + "/" + subpath;
             if (string.IsNullOrEmpty(subpath)) throw new ArgumentException("Empty file name.", nameof(subpath));
             fileInfo = new S3OwinFileInfo(amazonS3, bucketName, subpath);
             return true;

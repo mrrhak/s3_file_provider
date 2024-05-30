@@ -137,7 +137,37 @@ public class S3FileProviderTest
     }
 
     [Fact]
-    public void T004_GetFileInfo_NotFound()
+    public void T004_GetFileInfo_RootPath()
+    {
+        // Arrange
+        const string rootPath = "/";
+        const string key = "hello-world.txt";
+        const string expectedContent = "Hello, World!";
+        // Mock IAmazonS3 client
+        var mockS3Client = new Mock<IAmazonS3>();
+        mockS3Client
+            .Setup(client => client.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), default))
+            .ReturnsAsync(new GetObjectResponse
+            {
+                BucketName = bucketName,
+                HttpStatusCode = HttpStatusCode.OK,
+                Key = key,
+                ResponseStream = new MemoryStream(Encoding.UTF8.GetBytes(expectedContent))
+            });
+
+        // Act
+        var s3FileProvider = new S3FileProvider(mockS3Client.Object, bucketName, rootPath);
+        var fileInfo = s3FileProvider.GetFileInfo(key);
+        using var textReader = new StreamReader(fileInfo.CreateReadStream());
+
+        // Assert
+        Assert.True(fileInfo.Exists);
+        Assert.Equal(key, fileInfo.Name);
+        Assert.Equal(expectedContent, textReader.ReadToEnd());
+    }
+
+    [Fact]
+    public void T005_GetFileInfo_NotFound()
     {
         // Arrange
         const string key = "hello-world.txt";
@@ -160,7 +190,7 @@ public class S3FileProviderTest
     }
 
     [Fact]
-    public void T005_GetFileInfo_EmptyKey()
+    public void T006_GetFileInfo_EmptyKey()
     {
         // Arrange
         // Mock IAmazonS3 client
@@ -174,7 +204,7 @@ public class S3FileProviderTest
     }
 
     [Fact]
-    public void T006_GetFileInfo_InvalidKey()
+    public void T007_GetFileInfo_InvalidKey()
     {
         // Arrange
         const string invalidKey = "invalid-#.txt";
@@ -189,7 +219,7 @@ public class S3FileProviderTest
     }
 
     [Fact]
-    public void T007_Watch()
+    public void T008_Watch()
     {
         // Arrange
         const string key = "hello-world.txt";
@@ -214,7 +244,7 @@ public class S3FileProviderTest
     }
 
     [Fact]
-    public void T008_Dispose()
+    public void T009_Dispose()
     {
         // Arrange
         // Mock IAmazonS3 client

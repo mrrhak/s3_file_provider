@@ -143,7 +143,43 @@ namespace Test
         }
 
         [Fact]
-        public void T004_TryGetFileInfo_NotFound()
+        public void T004_TryGetFileInfo_RootPath()
+        {
+            // Arrange
+            const string rootPath = "/";
+            const string key = "hello-world.txt";
+            const string expectedContent = "Hello, World!";
+            // Mock IAmazonS3 client
+            var mockS3Client = new Mock<IAmazonS3>();
+            mockS3Client
+                .Setup(client => client.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), default))
+                .ReturnsAsync(new GetObjectResponse
+                {
+                    BucketName = bucketName,
+                    HttpStatusCode = HttpStatusCode.OK,
+                    Key = key,
+                    ResponseStream = new MemoryStream(Encoding.UTF8.GetBytes(expectedContent))
+                });
+
+            // Act and Assert
+            var s3OwinFileSystem = new S3OwinFileSystem(mockS3Client.Object, bucketName, rootPath);
+
+            try
+            {
+                var resFileInfo = s3OwinFileSystem.TryGetFileInfo(key, out var fileInfo);
+                using var textReader = new StreamReader(fileInfo.CreateReadStream());
+                Assert.True(resFileInfo);
+                Assert.Equal(key, fileInfo.Name);
+                Assert.Equal(expectedContent, textReader.ReadToEnd());
+            }
+            catch (ArgumentException ex)
+            {
+                Assert.NotNull(ex);
+            }
+        }
+
+        [Fact]
+        public void T005_TryGetFileInfo_NotFound()
         {
             // Arrange
             const string key = "hello-world.txt";
@@ -172,7 +208,7 @@ namespace Test
         }
 
         [Fact]
-        public void T005_TryGetFileInfo_EmptyKey()
+        public void T006_TryGetFileInfo_EmptyKey()
         {
             // Arrange
             // Mock IAmazonS3 client
@@ -186,7 +222,7 @@ namespace Test
         }
 
         [Fact]
-        public void T006_TryGetFileInfo_InvalidKey()
+        public void T007_TryGetFileInfo_InvalidKey()
         {
             // Arrange
             const string invalidKey = "invalid-#.txt";
@@ -201,7 +237,7 @@ namespace Test
         }
 
         [Fact]
-        public void T007_Dispose()
+        public void T008_Dispose()
         {
             // Arrange
             // Mock IAmazonS3 client

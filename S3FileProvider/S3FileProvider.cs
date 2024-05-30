@@ -59,8 +59,8 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
         /// <returns>An instance of the IDirectoryContents interface representing the directory contents.</returns>
         public IDirectoryContents GetDirectoryContents(string subpath)
         {
+            if (!string.IsNullOrEmpty(rootPath)) subpath = rootPath!.TrimStart(S3Constant.PATH_SEPARATORS) + "/" + subpath.TrimStart(S3Constant.PATH_SEPARATORS);
             subpath = subpath.TrimStart(S3Constant.PATH_SEPARATORS);
-            if (!string.IsNullOrEmpty(rootPath)) subpath = rootPath!.TrimStart(S3Constant.PATH_SEPARATORS) + "/" + subpath;
             return new S3DirectoryContents(amazonS3, bucketName, subpath);
         }
 
@@ -72,8 +72,8 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
         public IFileInfo GetFileInfo(string subpath)
         {
             if (HasInvalidFileNameChars(subpath)) throw new ArgumentException("Invalid file name.", nameof(subpath));
+            if (!string.IsNullOrEmpty(rootPath)) subpath = rootPath!.TrimStart(S3Constant.PATH_SEPARATORS) + "/" + subpath.TrimStart(S3Constant.PATH_SEPARATORS);
             subpath = subpath.TrimStart(S3Constant.PATH_SEPARATORS);
-            if (!string.IsNullOrEmpty(rootPath)) subpath = rootPath!.TrimStart(S3Constant.PATH_SEPARATORS) + "/" + subpath;
             if (string.IsNullOrEmpty(subpath)) throw new ArgumentException("Empty file name.", nameof(subpath));
             return new S3FileInfo(amazonS3, bucketName, subpath);
         }
