@@ -11,16 +11,19 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
     {
         private readonly IAmazonS3 amazonS3;
         private readonly string bucketName;
+        private readonly string? rootPath;
 
         /// <summary>
         /// Initializes a new instance of the S3FileProvider class.
         /// </summary>
         /// <param name="amazonS3">The Amazon S3 client.</param>
         /// <param name="bucketName">The name of the S3 bucket.</param>
-        public S3FileProvider(IAmazonS3 amazonS3, string bucketName)
+        /// <param name="rootPath">The root path for the S3 bucket.</param>
+        public S3FileProvider(IAmazonS3 amazonS3, string bucketName, string? rootPath = null)
         {
             this.amazonS3 = amazonS3;
             this.bucketName = bucketName;
+            this.rootPath = rootPath;
         }
 
         /// <summary>
@@ -57,6 +60,7 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
         public IDirectoryContents GetDirectoryContents(string subpath)
         {
             subpath = subpath.TrimStart(S3Constant.PATH_SEPARATORS);
+            if (!string.IsNullOrEmpty(rootPath)) subpath = rootPath!.TrimStart(S3Constant.PATH_SEPARATORS) + "/" + subpath;
             return new S3DirectoryContents(amazonS3, bucketName, subpath);
         }
 
@@ -69,6 +73,7 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
         {
             if (HasInvalidFileNameChars(subpath)) throw new ArgumentException("Invalid file name.", nameof(subpath));
             subpath = subpath.TrimStart(S3Constant.PATH_SEPARATORS);
+            if (!string.IsNullOrEmpty(rootPath)) subpath = rootPath!.TrimStart(S3Constant.PATH_SEPARATORS) + "/" + subpath;
             if (string.IsNullOrEmpty(subpath)) throw new ArgumentException("Empty file name.", nameof(subpath));
             return new S3FileInfo(amazonS3, bucketName, subpath);
         }

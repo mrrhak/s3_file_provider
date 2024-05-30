@@ -72,6 +72,7 @@ Or using `UseS3StaticFiles` extension method (recommended)
 | :---------------------- | :------: | :------: | :-----------: | :---------- |
 | `bucketName`            | `string` |    Yes   |               | The name of the S3 bucket |
 | `RequestPath`           | `string` |    No    |     `null`    | The request path for the static files |
+| `RootPath`           | `string` |    No    |     `null`    | The root path for the S3 bucket |
 | `serveUnknownFileTypes` |  `bool`  |    No    |     `false`   | Whether to serve unknown file types |
 
 ```csharp
@@ -97,6 +98,7 @@ app.UseS3StaticFiles(bucketName);
 | :---------------------- | :------- | :------: | :-----------: | :---------- |
 | `BucketName`            | `string` |    Yes   |    `empty`    | The name of the S3 bucket |
 | `RequestPath`           | `string` |    No    |    `null`     | The relative request path that maps to static resources |
+| `RootPath`              | `string` |    No    |    `null`     | The root path for the S3 bucket |
 | `ServeUnknownFileTypes` |  `bool`  |    No    |    `false`    | Whether to serve unknown file types |
 | `DefaultContentType`    | `string` |    No    |    `null`     | The default content type for a request if the ContentTypeProvider cannot determine one. None is provided by default, so the client must determine the format themselves |
 | `ContentTypeProvider`   | `IContentTypeProvider` | No | `null` | Used to map files to content-types |

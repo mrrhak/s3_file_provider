@@ -38,7 +38,7 @@ namespace Test
                 });
 
             // Act
-            var s3OwinFileSystem = new S3OwinFileSystem(mockS3Client.Object, bucketName);
+            var s3OwinFileSystem = new S3OwinFileSystem(mockS3Client.Object, bucketName, root);
             bool res = s3OwinFileSystem.TryGetDirectoryContents(root, out var rootContents);
 
             // Assert

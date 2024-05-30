@@ -18,6 +18,11 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
         public string? RequestPath { get; set; }
 
         /// <summary>
+        /// Root path for the S3 bucket.
+        /// </summary>
+        public string? RootPath { get; set; }
+
+        /// <summary>
         /// If the file is not a recognized content-type should it be served? Default: false.
         /// </summary>
         public bool? ServeUnknownFileTypes { get; set; }

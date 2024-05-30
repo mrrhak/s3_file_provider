@@ -10,16 +10,19 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
     {
         private readonly IAmazonS3 amazonS3;
         private readonly string bucketName;
+        private readonly string? rootPath;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="S3OwinFileSystem"/> class.
         /// </summary>
         /// <param name="amazonS3">The Amazon S3 client.</param>
         /// <param name="bucketName">The name of the S3 bucket.</param>
-        public S3OwinFileSystem(IAmazonS3 amazonS3, string bucketName)
+        /// <param name="rootPath">The root path for the S3 bucket.</param>
+        public S3OwinFileSystem(IAmazonS3 amazonS3, string bucketName, string? rootPath = null)
         {
             this.amazonS3 = amazonS3;
             this.bucketName = bucketName;
+            this.rootPath = rootPath;
         }
 
         /// <summary>
@@ -56,6 +59,7 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
         public bool TryGetDirectoryContents(string subpath, out IEnumerable<IFileInfo> contents)
         {
             subpath = subpath.TrimStart(S3Constant.PATH_SEPARATORS);
+            if (!string.IsNullOrEmpty(rootPath)) subpath = rootPath!.TrimStart(S3Constant.PATH_SEPARATORS) + "/" + subpath;
             var s3DirectoryContents = new S3OwinDirectoryContents(amazonS3, bucketName, subpath);
             contents = s3DirectoryContents.GetEnumerable();
             return true;
@@ -69,7 +73,8 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
         public bool TryGetFileInfo(string subpath, out IFileInfo fileInfo)
         {
             if (HasInvalidFileNameChars(subpath)) throw new ArgumentException("Invalid file name.", nameof(subpath));
-            subpath = subpath.TrimStart();
+            subpath = subpath.TrimStart(S3Constant.PATH_SEPARATORS);
+            if (!string.IsNullOrEmpty(rootPath)) subpath = rootPath!.TrimStart(S3Constant.PATH_SEPARATORS) + "/" + subpath;
             if (string.IsNullOrEmpty(subpath)) throw new ArgumentException("Empty file name.", nameof(subpath));
             fileInfo = new S3OwinFileInfo(amazonS3, bucketName, subpath);
             return true;

@@ -1,3 +1,9 @@
+## 1.2.0 (30-05-2024)
+- Allow passing rootPath to specify the root path for the S3 bucket
+- Update test coverage
+- Update README.md
+- Upgrade dependencies
+  
 ## 1.1.0 (10-05-2024)
 - Add new overloads for UseS3StaticFiles extension with Owin for .Net Framework
 - Add sample project for .Net Framework

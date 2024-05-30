@@ -38,7 +38,7 @@ public class S3FileProviderTest
             });
 
         // Act
-        var s3FileProvider = new S3FileProvider(mockS3Client.Object, bucketName);
+        var s3FileProvider = new S3FileProvider(mockS3Client.Object, bucketName, root);
         var rootContents = s3FileProvider.GetDirectoryContents(root);
 
         // Assert
