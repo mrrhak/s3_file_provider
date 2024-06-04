@@ -87,8 +87,8 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
         /// <returns>A seekable stream representing the file content.</returns>
         public Stream CreateReadStream()
         {
-            var objectResponse = GetFileObject();
-            if (objectResponse != null) return AmazonS3Util.MakeStreamSeekable(objectResponse.ResponseStream);
+            GetObjectResponse? response = GetFileObject();
+            if (response != null) return AmazonS3Util.MakeStreamSeekable(response.ResponseStream);
             else throw new FileNotFoundException("File not found.", key);
         }
 
