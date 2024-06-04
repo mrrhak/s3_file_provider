@@ -1,3 +1,8 @@
+## 1.2.1 (04-06-2024)
+- Add try catch to AWS S3 SDK
+- Update test coverage
+- Upgrade AWS S3 SDK
+
 ## 1.2.0 (30-05-2024)
 - Allow passing rootPath to specify the root path for the S3 bucket
 - Update test coverage

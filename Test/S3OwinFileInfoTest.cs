@@ -169,4 +169,21 @@ public class S3OwinFileInfoTest
         Assert.Equal(streamContent.Length, stream.Length);
         Assert.Equal(streamContent, new StreamReader(stream).ReadToEnd());
     }
+
+    [Fact]
+    public void T007_CreateReadStream_NotFound()
+    {
+        // Arrange
+        // Mock IAmazonS3 client
+        var mockS3Client = new Mock<IAmazonS3>();
+        mockS3Client
+            .Setup(client => client.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), default)).ThrowsAsync(new FileNotFoundException("File not found.", key));
+
+        // Act
+        var s3OwinFileInfo = new S3OwinFileInfo(mockS3Client.Object, bucketName, key);
+
+        // Assert
+        Assert.Throws<FileNotFoundException>(() => s3OwinFileInfo.CreateReadStream());
+        Assert.Equal("File not found.", Assert.Throws<FileNotFoundException>(() => s3OwinFileInfo.CreateReadStream()).Message);
+    }
 }

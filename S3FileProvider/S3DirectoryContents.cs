@@ -67,16 +67,25 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
 
         private void EnumerateContents()
         {
-            var request = new ListObjectsV2Request()
+            try
             {
-                BucketName = bucketName,
-                Delimiter = "/",
-                Prefix = IsRoot ? "" : subpath
-            };
-            var response = amazonS3.ListObjectsV2Async(request).Result;
-            var files = response.S3Objects.Where(x => x.Key != subpath).Select(x => new S3FileInfo(amazonS3, bucketName, x.Key));
-            var directories = response.CommonPrefixes.Select(x => new S3FileInfo(amazonS3, bucketName, x));
-            contents = directories.Concat(files);
+                var request = new ListObjectsV2Request()
+                {
+                    BucketName = bucketName,
+                    Delimiter = "/",
+                    Prefix = IsRoot ? "" : subpath
+                };
+                var response = amazonS3.ListObjectsV2Async(request).Result;
+                var files = response.S3Objects.Where(x => x.Key != subpath).Select(x => new S3FileInfo(amazonS3, bucketName, x.Key));
+                var directories = response.CommonPrefixes.Select(x => new S3FileInfo(amazonS3, bucketName, x));
+                contents = directories.Concat(files);
+            }
+            catch (Exception e)
+            {
+                string message = $"Could not list objects from the S3 bucket {bucketName} with the prefix {subpath}.";
+                Console.WriteLine(e.Message);
+                Console.WriteLine(message);
+            }
         }
     }
 }

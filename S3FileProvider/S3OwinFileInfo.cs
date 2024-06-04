@@ -30,7 +30,7 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
         /// <summary>
         /// Gets the length of the file.
         /// </summary>
-        public long Length => GetFileObject().ContentLength;
+        public long Length => GetFileObject()?.ContentLength ?? -1L;
 
         /// <summary>
         /// Gets the physical path of the file.
@@ -40,30 +40,55 @@ namespace MrrHak.Extensions.FileProviders.S3FileProvider
         /// <summary>
         /// Gets the name of the file.
         /// </summary>
-        public string Name => Path.GetFileName(GetFileObject().Key.TrimEnd('/'));
+        public string Name
+        {
+            get
+            {
+                var objectResponse = GetFileObject();
+                if (objectResponse != null) return Path.GetFileName(objectResponse.Key.TrimEnd('/'));
+                else return key;
+            }
+        }
 
         /// <summary>
         /// Gets the last modified date and time of the file.
         /// </summary>
-        public DateTime LastModified => GetFileObject().LastModified;
+        public DateTime LastModified => GetFileObject()?.LastModified ?? DateTime.MinValue;
 
         /// <summary>
         /// Gets a value indicating whether the file is a directory.
         /// </summary>
 
 #if NETFRAMEWORK || NETSTANDARD
-        public bool IsDirectory => GetFileObject().Key.EndsWith("/");
+        public bool IsDirectory => GetFileObject()?.Key.EndsWith("/") ?? false;
 #else
-        public bool IsDirectory => GetFileObject().Key.EndsWith('/');
+        public bool IsDirectory => GetFileObject()?.Key.EndsWith('/') ?? false;
 #endif
 
         /// <summary>
         /// Creates a read stream for the file.
         /// </summary>
         /// <returns>A seekable stream representing the file content.</returns>
-        public Stream CreateReadStream() => AmazonS3Util.MakeStreamSeekable(GetFileObject().ResponseStream);
+        public Stream CreateReadStream()
+        {
+            var objectResponse = GetFileObject();
+            if (objectResponse != null) return AmazonS3Util.MakeStreamSeekable(objectResponse.ResponseStream);
+            else throw new FileNotFoundException("File not found.", key);
+        }
 
-        private GetObjectResponse GetFileObject() => amazonS3.GetObjectAsync(bucketName, key).Result;
-
+        private GetObjectResponse? GetFileObject()
+        {
+            try
+            {
+                return amazonS3.GetObjectAsync(bucketName, key).Result;
+            }
+            catch (Exception e)
+            {
+                string message = $"Could not get an object from the S3 bucket {bucketName} with the key {key}.";
+                Console.WriteLine(e.Message);
+                Console.WriteLine(message);
+                return null;
+            }
+        }
     }
 }
