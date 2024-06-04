@@ -86,4 +86,22 @@ public class S3DirectoryContentsTest
         Assert.False(enumeration.MoveNext());
         Assert.Null(enumeration.Current);
     }
+
+    [Fact]
+    public void T003_GetEnumerator_Exception()
+    {
+        // Arrange
+        // Mock IAmazonS3 client
+        var mockS3Client = new Mock<IAmazonS3>();
+        mockS3Client
+            .Setup(client => client.ListObjectsV2Async(It.IsAny<ListObjectsV2Request>(), default))
+            .ThrowsAsync(new AmazonS3Exception("Test Exception"));
+
+        // Act
+        var subContents = new S3DirectoryContents(mockS3Client.Object, bucketName, "/");
+        var enumeration = subContents.GetEnumerator();
+
+        // Assert
+        Assert.False(enumeration.MoveNext());
+    }
 }

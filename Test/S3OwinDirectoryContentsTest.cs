@@ -52,4 +52,22 @@ public class S3OwinDirectoryContentsTest
         Assert.Equal(subFolder.TrimEnd('/'), enumerable.First().Name);
         Assert.True(enumerable.First().IsDirectory);
     }
+
+    [Fact]
+    public void T002_GetEnumerable_Exception()
+    {
+        // Arrange
+        // Mock IAmazonS3 client
+        var mockS3Client = new Mock<IAmazonS3>();
+        mockS3Client
+            .Setup(client => client.ListObjectsV2Async(It.IsAny<ListObjectsV2Request>(), default))
+            .ThrowsAsync(new AmazonS3Exception("Test Exception"));
+
+        // Act
+        var subContents = new S3OwinDirectoryContents(mockS3Client.Object, bucketName, "/");
+        var enumerable = subContents.GetEnumerable();
+
+        // Assert
+        Assert.Empty(enumerable);
+    }
 }
