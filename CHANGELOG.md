@@ -1,3 +1,9 @@
+## 1.3.0 (18-01-2026)
+- Add support .NET 9.0 and .NET 10.0
+- Drop support for .NET 6.0 and .NET 7.0
+- Update project dependencies
+- Update GitHub workflows
+
 ## 1.2.1 (04-06-2024)
 - Add try catch to AWS S3 SDK
 - Update test coverage
