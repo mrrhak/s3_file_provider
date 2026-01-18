@@ -32,6 +32,7 @@ public class S3OwinDirectoryContentsTest
             .ReturnsAsync(new ListObjectsV2Response
             {
                 HttpStatusCode = HttpStatusCode.OK,
+                CommonPrefixes = [],
                 S3Objects = new List<S3Object>(){
                     new() {
                         BucketName = bucketName,

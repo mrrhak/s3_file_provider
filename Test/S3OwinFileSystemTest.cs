@@ -25,6 +25,7 @@ namespace Test
                 .ReturnsAsync(new ListObjectsV2Response
                 {
                     HttpStatusCode = HttpStatusCode.OK,
+                    CommonPrefixes = [],
                     S3Objects = new List<S3Object>{
                     new() {
                         BucketName = bucketName,
@@ -62,6 +63,7 @@ namespace Test
                 .ReturnsAsync(new ListObjectsV2Response
                 {
                     HttpStatusCode = HttpStatusCode.OK,
+                    CommonPrefixes = [],
                     S3Objects = new List<S3Object>{
                     new() {
                         BucketName = bucketName,
@@ -76,6 +78,7 @@ namespace Test
                 .ReturnsAsync(new ListObjectsV2Response
                 {
                     HttpStatusCode = HttpStatusCode.OK,
+                    CommonPrefixes = [],
                     S3Objects = new List<S3Object>{
                     new() {
                         BucketName = bucketName,
