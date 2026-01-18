@@ -221,7 +221,7 @@ namespace Test
             var s3OwinFileSystem = new S3OwinFileSystem(mockS3Client.Object, bucketName);
 
             // Assert
-            Assert.Contains("Empty file name", Assert.Throws<ArgumentException>(() => s3OwinFileSystem.TryGetFileInfo("", out var emptyFileInfo)).Message);
+            Assert.Contains("Empty file name", Assert.Throws<ArgumentException>(() => s3OwinFileSystem.TryGetFileInfo("", out _)).Message);
         }
 
         [Fact]
@@ -236,7 +236,7 @@ namespace Test
             var s3OwinFileSystem = new S3OwinFileSystem(mockS3Client.Object, bucketName);
 
             // Assert
-            Assert.Contains("Invalid file name", Assert.Throws<ArgumentException>(() => s3OwinFileSystem.TryGetFileInfo(invalidKey, out var invalidFileInfo)).Message);
+            Assert.Contains("Invalid file name", Assert.Throws<ArgumentException>(() => s3OwinFileSystem.TryGetFileInfo(invalidKey, out _)).Message);
         }
 
         [Fact]
