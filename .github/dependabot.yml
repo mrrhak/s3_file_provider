@@ -1,0 +1,101 @@
+version: 2
+updates:
+  - package-ecosystem: "nuget"
+    directory: "/S3FileProvider"
+    schedule:
+      interval: "monthly"
+      day: "monday"
+      time: "08:00"
+      timezone: "Asia/Phnom_Penh"
+    target-branch: "master"
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: "chore(deps)"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "auto-update"
+      - "nuget"
+
+  - package-ecosystem: "nuget"
+    directory: "/Test"
+    schedule:
+      interval: "monthly"
+      day: "monday"
+      time: "08:00"
+      timezone: "Asia/Phnom_Penh"
+    target-branch: "master"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(test)"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "test"
+      - "auto-update"
+
+  - package-ecosystem: "nuget"
+    directory: "/Sample/Asp.NetCore"
+    schedule:
+      interval: "monthly"
+      day: "monday"
+      time: "08:00"
+      timezone: "Asia/Phnom_Penh"
+    target-branch: "dev"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(sample)"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "sample"
+      - "auto-update"
+
+  - package-ecosystem: "nuget"
+    directory: "/Sample/Asp.NetFramework"
+    schedule:
+      interval: "monthly"
+      day: "monday"
+      time: "08:00"
+      timezone: "Asia/Phnom_Penh"
+    target-branch: "dev"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(sample)"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "sample"
+      - "auto-update"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+      day: "monday"
+      time: "08:00"
+      timezone: "Asia/Phnom_Penh"
+    target-branch: "dev"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(ci)"
+      include: "scope"
+    labels:
+      - "ci"
+      - "auto-update"
+
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+      day: "monday"
+      time: "08:00"
+      timezone: "Asia/Phnom_Penh"
+    target-branch: "dev"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(npm)"
+      include: "scope"
+    labels:
+      - 'npm'
+      - "auto-update"
